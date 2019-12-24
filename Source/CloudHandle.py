@@ -1,3 +1,3 @@
 """
-Handles all the cloud connections
+Handles all of the cloud connections
 """
