@@ -7,10 +7,19 @@ Tagged: Used to store files that WERE tagged during analysis (i.e.; Keyword(s) d
 
 
 class FolderHandle:
-    """A class used to manage the various folder types."""
+    """A class that is used to manage the various types of folders."""
 
-    initial = {}
-    untagged = {}
-    tagged = {}
+    initial = []
+    untagged = []
+    tagged = []
+
+    def add_to_initial(self):
+        pass
+
+    def add_to_untagged(self):
+        pass
+
+    def add_to_tagged(self):
+        pass
 
     pass

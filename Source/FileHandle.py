@@ -7,6 +7,8 @@ import string
 
 
 class FileHandle:
+    """A class that is used to manipulate (handle) the files themselves."""
+
     fileName = ""
     fileType = ""
     tags = []
