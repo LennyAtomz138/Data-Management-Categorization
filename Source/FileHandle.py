@@ -5,7 +5,8 @@ Class that handles all the individual files.
 """
 import string
 
-class fileHandle:
+
+class FileHandle:
     fileName = ""
     fileType = ""
     tags = []
