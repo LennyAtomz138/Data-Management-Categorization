@@ -7,4 +7,10 @@ Tagged: Used to store files that WERE tagged during analysis (i.e.; Keyword(s) d
 
 
 class FolderHandle:
+    """A class used to manage the various folder types."""
+
+    initial = {}
+    untagged = {}
+    tagged = {}
+
     pass
