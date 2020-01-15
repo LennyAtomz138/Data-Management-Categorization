@@ -263,9 +263,10 @@ class DocumentProcessor:
 
 
 def main():
+    """Runs Textract tool on document that is located in the specified AWS S3 bucket."""
     roleArn = 'arn:aws:iam::172734287275:role/aws-textract-role'
     bucket = 'uconn-sdp-team11-unprocessed-docs'
-    document = 'Seven_Ways_to_Apply_the_Cyber_Kill_Chain_with_a_Threat_Intelligence_Platform-page-003.jpg'
+    document = 'Test3PagePDF_Seven_Ways_to_Apply_the_Cyber_Kill_Chain_with_a_Threat_Intelligence_Platform-page-003.pdf'
 
     analyzer = DocumentProcessor(roleArn, bucket, document)
     analyzer.CreateTopicandQueue()
