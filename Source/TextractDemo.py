@@ -33,30 +33,30 @@ def ShowSelectedElement(draw, box, width, height, boxColor):
 def DisplayBlockInformation(block):
     print('Id: {}'.format(block['Id']))
     if 'Text' in block:
-        print('    Detected: ' + block['Text'])
-    print('    Type: ' + block['BlockType'])
+        print('Detected: ' + block['Text'])
+    print('Type: ' + block['BlockType'])
 
     if 'Confidence' in block:
-        print('    Confidence: ' + "{:.2f}".format(block['Confidence']) + "%")
+        print('Confidence: ' + "{:.2f}".format(block['Confidence']) + "%")
 
     if block['BlockType'] == 'CELL':
-        print("    Cell information")
-        print("        Column:" + str(block['ColumnIndex']))
-        print("        Row:" + str(block['RowIndex']))
-        print("        Column Span:" + str(block['ColumnSpan']))
-        print("        RowSpan:" + str(block['ColumnSpan']))
+        print("Cell information")
+        print("Column:" + str(block['ColumnIndex']))
+        print("Row:" + str(block['RowIndex']))
+        print("Column Span:" + str(block['ColumnSpan']))
+        print("RowSpan:" + str(block['ColumnSpan']))
 
     if 'Relationships' in block:
-        print('    Relationships: {}'.format(block['Relationships']))
-    print('    Geometry: ')
-    print('        Bounding Box: {}'.format(block['Geometry']['BoundingBox']))
-    print('        Polygon: {}'.format(block['Geometry']['Polygon']))
+        print('Relationships: {}'.format(block['Relationships']))
+    print('Geometry: ')
+    print('Bounding Box: {}'.format(block['Geometry']['BoundingBox']))
+    print('Polygon: {}'.format(block['Geometry']['Polygon']))
 
     if block['BlockType'] == "KEY_VALUE_SET":
-        print('    Entity Type: ' + block['EntityTypes'][0])
+        print('Entity Type: ' + block['EntityTypes'][0])
 
     if block['BlockType'] == 'SELECTION_ELEMENT':
-        print('    Selection element detected: ', end='')
+        print('Selection element detected: ', end='')
 
         if block['SelectionStatus'] == 'SELECTED':
             print('Selected')
@@ -130,8 +130,8 @@ def process_text_analysis(bucket, document):
 
 def main():
     """TODO: Add name of S3 bucket as well as the name of the document object of interest."""
-    bucket = ''
-    document = ''
+    bucket = 'uconn-sdp-team11-unprocessed-docs'
+    document = 'LM-White-Paper-Defendable-Architectures.pdf'
     block_count = process_text_analysis(bucket, document)
     print("Blocks detected: " + str(block_count))
 
