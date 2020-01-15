@@ -131,7 +131,7 @@ def process_text_analysis(bucket, document):
 def main():
     """TODO: Add name of S3 bucket as well as the name of the document object of interest."""
     bucket = 'uconn-sdp-team11-unprocessed-docs'
-    document = 'AWS-Achieves_FED-Ramp-JPEG.jpg'
+    document = 'Seven_Ways_to_Apply_the_Cyber_Kill_Chain_with_a_Threat_Intelligence_Platform-page-003.jpg'
     block_count = process_text_analysis(bucket, document)
     print("Blocks detected: " + str(block_count))
 
