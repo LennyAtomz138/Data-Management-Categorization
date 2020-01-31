@@ -31,18 +31,18 @@ class DocumentProcessor:
         self.bucket = bucket
         self.document = document
 
-    def ProcessDocument(self, type):
+    def ProcessDocument(self, doc_type):
         jobFound = False
 
-        self.processType = type
+        self.processType = doc_type
         validType = False
 
-        # Determine which type of processing to perform
+        # Determine which doc_type of processing to perform
         if self.processType == ProcessType.DETECTION:
             response = self.textract.start_document_text_detection(
                 DocumentLocation={'S3Object': {'Bucket': self.bucket, 'Name': self.document}},
                 NotificationChannel={'RoleArn': self.roleArn, 'SNSTopicArn': self.snsTopicArn})
-            print('Processing type: Detection')
+            print('Processing doc_type: Detection')
             validType = True
 
         if self.processType == ProcessType.ANALYSIS:
@@ -50,16 +50,16 @@ class DocumentProcessor:
                 DocumentLocation={'S3Object': {'Bucket': self.bucket, 'Name': self.document}},
                 FeatureTypes=["TABLES", "FORMS"],
                 NotificationChannel={'RoleArn': self.roleArn, 'SNSTopicArn': self.snsTopicArn})
-            print('Processing type: Analysis')
+            print('Processing doc_type: Analysis')
             validType = True
 
-        if validType == False:
-            print("Invalid processing type. Choose Detection or Analysis.")
+        if validType is False:
+            print("Invalid processing doc_type. Choose Detection or Analysis.")
             return
 
         print('Start Job Id: ' + response['JobId'])
         dotLine = 0
-        while jobFound == False:
+        while jobFound is False:
             sqsResponse = self.sqs.receive_message(QueueUrl=self.sqsQueueUrl, MessageAttributeNames=['ALL'],
                                                    MaxNumberOfMessages=10)
 
@@ -94,9 +94,9 @@ class DocumentProcessor:
                     self.sqs.delete_message(QueueUrl=self.sqsQueueUrl,
                                             ReceiptHandle=message['ReceiptHandle'])
 
-        print('Done!')
+        # print('Done!')
 
-    def CreateTopicandQueue(self):
+    def CreateTopicAndQueue(self):
 
         millis = str(int(round(time.time() * 1000)))
 
@@ -147,58 +147,61 @@ class DocumentProcessor:
                 'Policy': policy
             })
 
-    def DeleteTopicandQueue(self):
+    def DeleteTopicAndQueue(self):
         self.sqs.delete_queue(QueueUrl=self.sqsQueueUrl)
         self.sns.delete_topic(TopicArn=self.snsTopicArn)
 
     # Display information about a block
     def DisplayBlockInfo(self, block):
 
-        print("Block Id: " + block['Id'])
-        print("Type: " + block['BlockType'])
-        if 'EntityTypes' in block:
-            print('EntityTypes: {}'.format(block['EntityTypes']))
+        # print("Block Id: " + block['Id'])
+        # print("Type: " + block['BlockType'])
+        # if 'EntityTypes' in block:
+        #     print('EntityTypes: {}'.format(block['EntityTypes']))
+
+        # if 'Text' in block:
+        #     print("Text: " + block['Text'])
 
         if 'Text' in block:
-            print("Text: " + block['Text'])
+            print(block['Text'])
 
-        if block['BlockType'] != 'PAGE':
-            print("Confidence: " + "{:.2f}".format(block['Confidence']) + "%")
-
-        print('Page: {}'.format(block['Page']))
-
-        if block['BlockType'] == 'CELL':
-            print('Cell Information')
-            print('\tColumn: {} '.format(block['ColumnIndex']))
-            print('\tRow: {}'.format(block['RowIndex']))
-            print('\tColumn span: {} '.format(block['ColumnSpan']))
-            print('\tRow span: {}'.format(block['RowSpan']))
-
-            if 'Relationships' in block:
-                print('\tRelationships: {}'.format(block['Relationships']))
-
-        print('Geometry')
-        print('\tBounding Box: {}'.format(block['Geometry']['BoundingBox']))
-        print('\tPolygon: {}'.format(block['Geometry']['Polygon']))
-
-        if block['BlockType'] == 'SELECTION_ELEMENT':
-            print('    Selection element detected: ', end='')
-            if block['SelectionStatus'] == 'SELECTED':
-                print('Selected')
-            else:
-                print('Not selected')
+        # if block['BlockType'] != 'PAGE':
+        #     print("Confidence: " + "{:.2f}".format(block['Confidence']) + "%")
+        #
+        # print('Page: {}'.format(block['Page']))
+        #
+        # if block['BlockType'] == 'CELL':
+        #     print('Cell Information')
+        #     print('\tColumn: {} '.format(block['ColumnIndex']))
+        #     print('\tRow: {}'.format(block['RowIndex']))
+        #     print('\tColumn span: {} '.format(block['ColumnSpan']))
+        #     print('\tRow span: {}'.format(block['RowSpan']))
+        #
+        #     if 'Relationships' in block:
+        #         print('\tRelationships: {}'.format(block['Relationships']))
+        #
+        # print('Geometry')
+        # print('\tBounding Box: {}'.format(block['Geometry']['BoundingBox']))
+        # print('\tPolygon: {}'.format(block['Geometry']['Polygon']))
+        #
+        # if block['BlockType'] == 'SELECTION_ELEMENT':
+        #     print('    Selection element detected: ', end='')
+        #     if block['SelectionStatus'] == 'SELECTED':
+        #         print('Selected')
+        #     else:
+        #         print('Not selected')
 
     def GetResults(self, jobId):
         maxResults = 1000
         paginationToken = None
         finished = False
 
-        while finished == False:
+        while not finished:
 
             response = None
 
             if self.processType == ProcessType.ANALYSIS:
-                if paginationToken == None:
+                if paginationToken is None:
                     response = self.textract.get_document_analysis(JobId=jobId,
                                                                    MaxResults=maxResults)
                 else:
@@ -207,7 +210,7 @@ class DocumentProcessor:
                                                                    NextToken=paginationToken)
 
             if self.processType == ProcessType.DETECTION:
-                if paginationToken == None:
+                if paginationToken is None:
                     response = self.textract.get_document_text_detection(JobId=jobId,
                                                                          MaxResults=maxResults)
                 else:
@@ -235,7 +238,7 @@ class DocumentProcessor:
         paginationToken = None
         finished = False
 
-        while finished == False:
+        while not finished:
 
             response = None
             if paginationToken == None:
@@ -269,11 +272,10 @@ def main():
     document = 'Test3PagePDF_Seven_Ways_to_Apply_the_Cyber_Kill_Chain_with_a_Threat_Intelligence_Platform-page-003.pdf'
 
     analyzer = DocumentProcessor(roleArn, bucket, document)
-    analyzer.CreateTopicandQueue()
+    analyzer.CreateTopicAndQueue()
     analyzer.ProcessDocument(ProcessType.DETECTION)
-    analyzer.DeleteTopicandQueue()
+    analyzer.DeleteTopicAndQueue()
 
 
 if __name__ == "__main__":
     main()
-
