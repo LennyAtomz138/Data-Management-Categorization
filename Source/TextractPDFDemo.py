@@ -5,6 +5,7 @@ import boto3
 import json
 import sys
 import time
+from Source.Algorithms import TextAlgorithm
 
 
 class ProcessType:
@@ -221,7 +222,7 @@ class DocumentProcessor:
                                                                MaxResults=maxResults,
                                                                NextToken=paginationToken)
 
-                # Get the text blocks
+            # Get the text blocks
             blocks = response['Blocks']
             print('Analyzed Document Text')
             print('Pages: {}'.format(response['DocumentMetadata']['Pages']))
@@ -242,6 +243,8 @@ def main():
     bucket = 'uconn-sdp-team11-unprocessed-docs'
     document = 'Test3PagePDF_Seven_Ways_to_Apply_the_Cyber_Kill_Chain_with_a_Threat_Intelligence_Platform-page-003.pdf'
 
+    keywords = [(input("Enter some keywords for testing: "))]
+
     analyzer = DocumentProcessor(roleArn, bucket, document)
     analyzer.CreateTopicAndQueue()
     analyzer.ProcessDocument(ProcessType.DETECTION)
@@ -249,8 +252,13 @@ def main():
 
     # TODO: Comment out this print statement when you're ready.
     print(DocumentProcessor.text_array)
+
+    # Call TextAlgorithm here and pass it the keywords and text_array.
+    find_matches = TextAlgorithm.TextAlgorithm(keywords, DocumentProcessor.text_array)
+    find_matches.find_num_matches()
+
     # Empty out the text storage array.
-    DocumentProcessor.text_array = []
+    # DocumentProcessor.text_array = []
 
 
 if __name__ == "__main__":
