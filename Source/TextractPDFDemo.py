@@ -214,7 +214,7 @@ class DocumentProcessor:
         while not finished:
 
             response = None
-            if paginationToken == None:
+            if paginationToken is None:
                 response = self.textract.get_document_analysis(JobId=jobId,
                                                                MaxResults=maxResults)
             else:

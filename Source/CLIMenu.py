@@ -11,6 +11,7 @@ def MainMenu():
         print("",
               "1 - Open SubMenu1\n",
               "2 - Open SubMenu2\n",
+              "3 - Input Access Credentials\n",
               "0 - Exit program\n")
 
         user_input = int(input("Enter number here: "))
@@ -22,8 +23,10 @@ def MainMenu():
             SubMenu1()
         elif user_input == 2:
             SubMenu2()
+        elif user_input == 3:
+            AccessCredentialsMenu()
         else:
-            print("Incorrect input. Enter a valid input \n")
+            print("Invalid input: Enter a valid input. \n")
     return
 
 
@@ -46,19 +49,19 @@ def SubMenu1():
             input("Press Enter to go back to main menu...")
             break
         elif user_input == 1:
-            print("You're Wrong\n")
+            print("Try Again...\n")
         elif user_input == 2:
-            print("You're Wrong\n")
+            print("Try Again...\n")
         elif user_input == 3:
-            print("You're Wrong\n")
+            print("Try Again...\n")
         elif user_input == 4:
-            print("You're Wrong\n")
+            print("Try Again...\n")
         elif user_input == 5:
-            print("You're Wrong\n")
+            print("Try Again...\n")
         elif user_input == 6:
             print("You have good tastes!\n")
         else:
-            print("Incorrect input. Enter a valid input \n")
+            print("Invalid input: Enter a valid input. \n")
 
 
 def SubMenu2():
@@ -84,7 +87,33 @@ def SubMenu2():
         elif user_input == 3:
             print("Don't forget your vegetables\n")
         else:
-            print("Incorrect input. Enter a valid input \n")
+            print("Invalid input: Enter a valid input. \n")
+
+
+def AccessCredentialsMenu():
+    print("Access Credentials Menu")
+
+    while True:
+        print("",
+              "0 - Go back to the main menu\n",
+              "1 - Input Access Credentials\n"
+              )
+
+        user_input = int(input("Input a number: "))
+
+        if user_input == 0:
+            input("Press Enter to go back to main menu...")
+            break
+        elif user_input == 1:
+            access_key = input("Input Access Key: ")
+            secret_key = input("Input Secret Key: ")
+            print("This is still in the test phase.\n")
+            print("You entered:\n")
+            print("Access Key: ", access_key)
+            print("Secret Key: ", secret_key)
+            print("\n")
+        else:
+            print("Invalid input: Enter a valid input. \n")
 
 
 print("This is the Database Management-Categorization Tool")
