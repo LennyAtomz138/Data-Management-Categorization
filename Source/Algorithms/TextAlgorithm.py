@@ -21,8 +21,6 @@ class TextAlgorithm:
         Returns the number of keyword matches that were detected.
         :return:
         """
-
-        # TODO: Configure this method to read the DocumentProcessor.text_array.
         for word in self.text_array:
             if word in self.keywords:
                 self.num_match += 1
