@@ -12,22 +12,13 @@ class ProcessType:
     ANALYSIS = 2
 
 
-def DisplayBlockText(block):
-    """
-    Used to display information from within a Textract block.
-    A Block represents items that are recognized in a document within a group of pixels close to each other.
-    :param block: The item returned by Textract.
-    :return:
-    """
-    if 'Text' in block:
-        print(block['Text'])
-
-
 class DocumentProcessor:
     jobId = ''
     textract = boto3.client('textract')
     sqs = boto3.client('sqs')
     sns = boto3.client('sns')
+
+    text_array = []
 
     roleArn = ''
     bucket = ''
@@ -158,6 +149,16 @@ class DocumentProcessor:
                 'Policy': policy
             })
 
+    def StoreBlockText(self, block):
+        """
+        Used to display information from within a Textract block.
+        A Block represents items that are recognized in a document within a group of pixels close to each other.
+        :param block: The item returned by Textract.
+        :return:
+        """
+        if 'Text' in block:
+            self.text_array.append(block['Text'])
+
     def DeleteTopicAndQueue(self):
         self.sqs.delete_queue(QueueUrl=self.sqsQueueUrl)
         self.sns.delete_topic(TopicArn=self.snsTopicArn)
@@ -197,9 +198,7 @@ class DocumentProcessor:
 
             # Display block information
             for block in blocks:
-                DisplayBlockText(block)
-                print()
-                print()
+                self.StoreBlockText(block)
 
             if 'NextToken' in response:
                 paginationToken = response['NextToken']
@@ -229,9 +228,7 @@ class DocumentProcessor:
 
             # Display block information
             for block in blocks:
-                DisplayBlockText(block)
-                print()
-                print()
+                self.StoreBlockText(block)
 
                 if 'NextToken' in response:
                     paginationToken = response['NextToken']
@@ -249,6 +246,10 @@ def main():
     analyzer.CreateTopicAndQueue()
     analyzer.ProcessDocument(ProcessType.DETECTION)
     analyzer.DeleteTopicAndQueue()
+
+    print(DocumentProcessor.text_array)
+    # Empty out the text storage array.
+    DocumentProcessor.text_array = []
 
 
 if __name__ == "__main__":
