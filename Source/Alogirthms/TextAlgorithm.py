@@ -20,6 +20,7 @@ class TextAlgorithm:
         Returns the number of keyword matches that were detected.
         :return:
         """
+        # TODO: Configure this method to read the DocumentProcessor.text_array.
         while TextractPDFDemo.main() is not 0:
             # figure out how to read from string stream...
             pass

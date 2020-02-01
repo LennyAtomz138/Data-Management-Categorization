@@ -247,6 +247,7 @@ def main():
     analyzer.ProcessDocument(ProcessType.DETECTION)
     analyzer.DeleteTopicAndQueue()
 
+    # TODO: Comment out this print statement when you're ready.
     print(DocumentProcessor.text_array)
     # Empty out the text storage array.
     DocumentProcessor.text_array = []
