@@ -87,7 +87,6 @@ def GetUserKeywords():
                 print("Invalid integer. Please enter a value between 0 and 1.")
 
         elif user_input == 1:
-            # TODO: call Textracter HERE!!! <-- TESTING IT NOW!!!
             TextractPDFVersion.Main(keyword_list)
             print("\n")
         else:
