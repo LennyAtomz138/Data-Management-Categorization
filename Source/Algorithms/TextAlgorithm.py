@@ -3,7 +3,6 @@ An algorithm that is intended to analyze plain text (as opposed to graphs and th
 """
 
 
-# TODO: Ensure that this class is called with a list of keywords and the DocumentProcessor.text_array!
 class TextAlgorithm:
     """
     Used to parse documents in a specified S3 bucket for keyword matches.
@@ -23,8 +22,6 @@ class TextAlgorithm:
         for word in self.keywords:
             self.text_dictionary.update({word: 0})
 
-    # TODO: Configure method to annotate how many times each keyword was detected.
-    # TODO: -> Use a dictionary to keep a tally of each occurrence
     def find_num_matches(self):
         """
         Returns the number of keyword matches that were detected.

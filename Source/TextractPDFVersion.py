@@ -250,12 +250,12 @@ def Main(incoming_keywords):
     analyzer.ProcessDocument(ProcessType.DETECTION)
     analyzer.DeleteTopicAndQueue()
 
-    # TODO: Comment out this print statement when you're ready.
-    print("<TEST>: Here's the text array:\n", DocumentProcessor.text_array)
+    # TODO: Comment out these <TEST> print statement when ready.
+    print("<TEST>: Here's the text array:\n", analyzer.text_array)
     print("<TEST>: Here are the keywords:\n", keywords)
 
     # Call TextAlgorithm here and pass it the keywords and text_array.
-    find_matches = TextAlgorithm.TextAlgorithm(keywords, DocumentProcessor.text_array)
+    find_matches = TextAlgorithm.TextAlgorithm(keywords, analyzer.text_array)
     find_matches.find_num_matches()
 
     # Empty out the text storage array.
