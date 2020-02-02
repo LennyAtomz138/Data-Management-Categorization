@@ -127,22 +127,22 @@ class DocumentProcessor:
 
         # Authorize SNS to write SQS queue
         policy = """{{
-  "Version":"2012-10-17",
-  "Statement":[
-    {{
-      "Sid":"MyPolicy",
-      "Effect":"Allow",
-      "Principal" : {{"AWS" : "*"}},
-      "Action":"SQS:SendMessage",
-      "Resource": "{}",
-      "Condition":{{
-        "ArnEquals":{{
-          "aws:SourceArn": "{}"
-        }}
-      }}
-    }}
-  ]
-}}""".format(sqsQueueArn, self.snsTopicArn)
+          "Version":"2012-10-17",
+          "Statement":[
+            {{
+              "Sid":"MyPolicy",
+              "Effect":"Allow",
+              "Principal" : {{"AWS" : "*"}},
+              "Action":"SQS:SendMessage",
+              "Resource": "{}",
+              "Condition":{{
+                "ArnEquals":{{
+                  "aws:SourceArn": "{}"
+                }}
+              }}
+            }}
+          ]
+        }}""".format(sqsQueueArn, self.snsTopicArn)
 
         response = self.sqs.set_queue_attributes(
             QueueUrl=self.sqsQueueUrl,

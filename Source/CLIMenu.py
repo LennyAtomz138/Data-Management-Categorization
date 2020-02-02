@@ -4,117 +4,137 @@ It is called by Main.py.
 """
 
 
-# add check for when user inputs non integer input
 def MainMenu():
+    """
+    The main menu for the DMCT program that contains submenus for user navigation.
+    :return:
+    """
     while True:
-        print("Main Menu")
+        print("="*14, "Main Menu", "="*16)
         print("",
-              "1 - Open SubMenu1\n",
-              "2 - Open SubMenu2\n",
-              "3 - Input Access Credentials\n",
-              "0 - Exit program\n")
+              "1 - Input Keyword(s) and Parse Documents\n",
+              "2 - Input Access Credentials\n",
+              "0 - Exit DMCT")
+        print("="*41)
+        user_input = int(input("Enter Number: "))
 
-        user_input = int(input("Enter number here: "))
-
-        if user_input == 0:
-            input("Press Enter to exit program...")
-            break
-        elif user_input == 1:
-            SubMenu1()
-        elif user_input == 2:
-            SubMenu2()
-        elif user_input == 3:
-            AccessCredentialsMenu()
-        else:
-            print("Invalid input: Enter a valid input. \n")
+        try:
+            if user_input < 0 or user_input > 2:
+                raise ValueError
+            elif user_input == 0:
+                print("Exiting the Data Management Categorization Tool")
+                break
+            elif user_input == 1:
+                print("\n")
+                GetUserKeywords()
+            elif user_input == 2:
+                print("\n")
+                AccessCredentialsMenu()
+            else:
+                print("Invalid input: Please try again.")
+        except ValueError:
+            print("Invalid integer. Please enter a value between 0 and 2.")
     return
 
 
-def SubMenu1():
-    print("Submenu1")
+def GetUserKeywords():
+    """
+    Prompts user for keywords and stores them in an array.
+    Displays the array to the screen upon completion.
+    :return:
+    """
+    keyword_list = []
+    keyword_counter = 0
+
+    print("="*8, "Keyword Entry Screen", "="*11)
+    print("(Input 'halt dmct' when finished)")
+    print("=" * 41)
 
     while True:
-        print("",
-              "0 - Go back to the main menu\n",
-              "1 - Hamburger\n",
-              "2 - Cheeseburger\n",
-              "3 - Hotdog\n",
-              "4 - Cheesedog\n",
-              "5 - Milkshake\n",
-              "6 - Cheeseshake\n")
-
-        user_input = int(input("Input your favorite food: "))
-
-        if user_input == 0:
-            input("Press Enter to go back to main menu...")
+        keyword_counter += 1
+        user_input = input("Enter keyword # {counter}: ".format(counter=keyword_counter))
+        if user_input.lower() == 'halt dmct':
             break
-        elif user_input == 1:
-            print("Try Again...\n")
-        elif user_input == 2:
-            print("Try Again...\n")
-        elif user_input == 3:
-            print("Try Again...\n")
-        elif user_input == 4:
-            print("Try Again...\n")
-        elif user_input == 5:
-            print("Try Again...\n")
-        elif user_input == 6:
-            print("You have good tastes!\n")
         else:
-            print("Invalid input: Enter a valid input. \n")
+            keyword_list.append(user_input)
 
+    print("You've entered the following keyword(s):\n", keyword_list)
+    user_input = int(input("Proceed with document tagging?\n"
+                           "Enter 1 for 'Yes' or 0 for 'No': "))
+    try:
+        if user_input < 0 or user_input > 1:
+            raise ValueError
+        elif user_input == 0:
 
-def SubMenu2():
-    print("Submenu2")
+            print("Would you like to try again?\n",
+                  "1 - Try Again\n",
+                  "0 - Quit to Main Menu")
 
-    while True:
-        print("",
-              "0 - Go back to the main menu\n",
-              "1 - Green\n",
-              "2 - Bean\n",
-              "3 - Eating machine\n",
-              )
+            user_input = int(input("Enter Number: "))
+            try:
+                if user_input < 0 or user_input > 1:
+                    raise ValueError
+                elif user_input == 0:
+                    print("\n")
+                    MainMenu()
+                elif user_input == 1:
+                    print("\n")
+                    GetUserKeywords()
+                else:
+                    print("Invalid input: Please try again.")
+            except ValueError:
+                print("Invalid integer. Please enter a value between 0 and 1.")
 
-        user_input = int(input("Input a number: "))
-
-        if user_input == 0:
-            input("Press Enter to go back to main menu...")
-            break
         elif user_input == 1:
-            print("Tasty\n")
-        elif user_input == 2:
-            print("Be nice\n")
-        elif user_input == 3:
-            print("Don't forget your vegetables\n")
+            # TODO: call Textracter HERE!!!
+            print("PLACEHOLDER: <calling Textracter now>")
+            print("\n")
         else:
-            print("Invalid input: Enter a valid input. \n")
+            print("Invalid input: Please try again.")
+    except ValueError:
+        print("Invalid integer. Please enter a value between 0 and 1.")
 
 
 def AccessCredentialsMenu():
-    print("Access Credentials Menu")
+    """
+    Used to input access credentials for the `aws configure` terminal command.
+    User will need to provide an Access Key and a Secret Key.
+    Both of those can be found within their IAM console at aws.amazon.com.
+    (IAM console > My Security Credentials > Access Keys)
+    :return:
+    """
+    print("="*8, "Access Credentials Menu", "="*8)
 
     while True:
         print("",
-              "0 - Go back to the main menu\n",
-              "1 - Input Access Credentials\n"
-              )
+              "1 - Input Access Credentials\n",
+              "0 - Return to the Main Menu")
+        print("=" * 41)
 
-        user_input = int(input("Input a number: "))
+        user_input = int(input("Enter Number: "))
+        try:
+            if user_input < 0 or user_input > 1:
+                raise ValueError
+            elif user_input == 0:
+                print("\n")
+                MainMenu()
+            elif user_input == 1:
+                access_key = input("Input Access Key: ")
+                secret_key = input("Input Secret Key: ")
+                print("This is still in the test phase.\n")
+                print("You entered:\n")
+                print("Access Key: ", access_key)
+                print("Secret Key: ", secret_key)
+                print("\n")
+            else:
+                print("Invalid input: Enter 0 or 1. \n")
+        except ValueError:
+            print("Invalid integer. Please enter a value between 0 and 1.")
 
-        if user_input == 0:
-            input("Press Enter to go back to main menu...")
-            break
-        elif user_input == 1:
-            access_key = input("Input Access Key: ")
-            secret_key = input("Input Secret Key: ")
-            print("This is still in the test phase.\n")
-            print("You entered:\n")
-            print("Access Key: ", access_key)
-            print("Secret Key: ", secret_key)
-            print("\n")
-        else:
-            print("Invalid input: Enter a valid input. \n")
 
+print("*=*"*14)
+print("Database Management Categorization Tool")
+print("\t"*3, " "*2, "(DMTC)")
+print("*=*"*14)
 
-print("This is the Database Management-Categorization Tool")
 MainMenu()
