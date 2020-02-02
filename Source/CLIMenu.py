@@ -2,11 +2,12 @@
 CLI Menu is used to display the DMCT menu at application startup.
 It is called by Main.py.
 """
+from Source import TextractPDFVersion
 
 
 def MainMenu():
     """
-    The main menu for the DMCT program that contains submenus for user navigation.
+    The Main Menu for the DMCT program that contains submenus for user navigation.
     :return:
     """
     while True:
@@ -86,8 +87,8 @@ def GetUserKeywords():
                 print("Invalid integer. Please enter a value between 0 and 1.")
 
         elif user_input == 1:
-            # TODO: call Textracter HERE!!!
-            print("PLACEHOLDER: <calling Textracter now>")
+            # TODO: call Textracter HERE!!! <-- TESTING IT NOW!!!
+            TextractPDFVersion.Main(keyword_list)
             print("\n")
         else:
             print("Invalid input: Please try again.")
@@ -134,7 +135,7 @@ def AccessCredentialsMenu():
 
 print("*=*"*14)
 print("Database Management Categorization Tool")
-print("\t"*3, " "*2, "(DMTC)")
+print("\t"*3, " "*2, "(DMCT)")
 print("*=*"*14)
 
 MainMenu()

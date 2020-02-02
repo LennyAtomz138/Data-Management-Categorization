@@ -5,7 +5,10 @@ An algorithm that is intended to analyze plain text (as opposed to graphs and th
 
 # TODO: Ensure that this class is called with a list of keywords and the DocumentProcessor.text_array!
 class TextAlgorithm:
-
+    """
+    Used to parse documents in a specified S3 bucket for keyword matches.
+    Initialized with keywords and a array of Textracted strings.
+    """
     def __init__(self, keywords, text_array):
         """
         Initialize TextAlgorithm class with a keyword for search.
@@ -26,4 +29,3 @@ class TextAlgorithm:
                 self.num_match += 1
 
         print("TEST: Number of observed matches: ", self.num_match)
-        print("\n")
