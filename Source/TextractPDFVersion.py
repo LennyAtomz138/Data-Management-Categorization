@@ -1,3 +1,4 @@
+# TODO: Remove these 2 comments below this message when ready.
 # Asynchronously processes text in a document stored in an S3 bucket.
 # For set up information, see https://docs.aws.amazon.com/textract/latest/dg/async.html
 
@@ -255,12 +256,12 @@ def Main(incoming_keywords):
     print("<TEST>: Here are the keywords:\n", keywords)
 
     # Call TextAlgorithm here and pass it the keywords and text_array.
-    find_matches = TextAlgorithm.TextAlgorithm(keywords, analyzer.text_array)
-    find_matches.find_num_matches()
-
-    # Empty out the text storage array.
-    # DocumentProcessor.text_array = []
+    find_matches = TextAlgorithm
+    find_matches.find_num_matches(keywords, analyzer.text_array)
 
 
+# TODO: Figure out how to keep Main Menu from launching after attempting to exit program,
+#  note that this seems to happen after the Textracter does it job and the user is
+#  returned to the Main Menu.
 if __name__ == "__main__":
     Main()
