@@ -10,6 +10,12 @@ def MainMenu():
     The Main Menu for the DMCT program that contains submenus for user navigation.
     :return:
     """
+
+    print("*=*" * 14)
+    print("Database Management Categorization Tool")
+    print("\t" * 3, " " * 2, "(DMCT)")
+    print("*=*" * 14)
+
     while True:
         print("="*14, "Main Menu", "="*16)
         print("",
@@ -127,11 +133,3 @@ def AccessCredentialsMenu():
                 print("Invalid input: Enter 0 or 1. \n")
         except ValueError:
             print("Invalid integer. Please enter a value between 0 and 1.")
-
-
-print("*=*"*14)
-print("Database Management Categorization Tool")
-print("\t"*3, " "*2, "(DMCT)")
-print("*=*"*14)
-
-MainMenu()
