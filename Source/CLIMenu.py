@@ -62,8 +62,9 @@ def GetUserKeywords():
         if user_input.lower() == 'halt dmct':
             break
         else:
-            keyword_list.append(user_input)
+            keyword_list.append(user_input.lower())
 
+    keyword_list.sort()
     print("=" * 41)
     print("You've entered the following keyword(s):\n", keyword_list)
     user_input = int(input("Proceed with document tagging?\n"

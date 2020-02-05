@@ -159,7 +159,7 @@ class DocumentProcessor:
         :return:
         """
         if 'Text' in block:
-            self.text_array.append(block['Text'])
+            self.text_array.append(block['Text'].lower())
 
     def DeleteTopicAndQueue(self):
         self.sqs.delete_queue(QueueUrl=self.sqsQueueUrl)
