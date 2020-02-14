@@ -2,7 +2,8 @@
 CLI Menu is used to display the DMCT menu at application startup.
 It is called by Main.py.
 """
-from Source import TextractPDFVersion
+from Source import TextractPDFVersion, FileHandle
+from openpyxl import Workbook
 
 
 def MainMenu():
@@ -17,16 +18,17 @@ def MainMenu():
     print("*=*" * 14)
 
     while True:
-        print("="*14, "Main Menu", "="*16)
+        print("=" * 14, "Main Menu", "=" * 16)
         print("",
               "1 - Input Keyword(s) and Parse Documents\n",
               "2 - Input Access Credentials\n",
+              "3 - Test Excel Tagging\n",
               "0 - Exit DMCT")
-        print("="*41)
+        print("=" * 41)
         user_input = int(input("Enter Number: "))
 
         try:
-            if user_input < 0 or user_input > 2:
+            if user_input < 0 or user_input > 3:
                 raise ValueError
             elif user_input == 0:
                 print("Exiting the Data Management Categorization Tool")
@@ -37,6 +39,9 @@ def MainMenu():
             elif user_input == 2:
                 print("\n")
                 AccessCredentialsMenu()
+            elif user_input == 3:
+                print("\n")
+                TestExcelTagging()
             else:
                 print("Invalid input: Please try again.")
         except ValueError:
@@ -52,7 +57,7 @@ def GetUserKeywords():
     keyword_list = []
     keyword_counter = 0
 
-    print("="*8, "Keyword Entry Screen", "="*11)
+    print("=" * 8, "Keyword Entry Screen", "=" * 11)
     print("(Input 'halt dmct' when finished)")
     print("=" * 41)
 
@@ -107,7 +112,7 @@ def AccessCredentialsMenu():
     (IAM console > My Security Credentials > Access Keys)
     :return:
     """
-    print("="*8, "Access Credentials Menu", "="*8)
+    print("=" * 8, "Access Credentials Menu", "=" * 8)
 
     while True:
         print("",
@@ -134,3 +139,56 @@ def AccessCredentialsMenu():
                 print("Invalid input: Enter 0 or 1. \n")
         except ValueError:
             print("Invalid integer. Please enter a value between 0 and 1.")
+
+
+def TestExcelTagging():
+    """
+    Proof of concept function for outputting tagged files into an Excel Document
+    3 Test Documents (with pre-defined tags) used for testing
+    Output document saved to the Source directory at the moment
+    :return:
+    """
+    print("=" * 8, "Excel Tagging Test", "=" * 8)
+
+    # Test files
+
+    file1 = FileHandle.FileHandle("Planes", "docx")
+    file2 = FileHandle.FileHandle("Trains", "pdf")
+    file3 = FileHandle.FileHandle("Automobiles", "jpeg")
+
+    file1.addtag("aviation")
+    file1.addtag("documentation")
+
+    file2.addtag("locomotive")
+    file2.addtag("promotional")
+
+    file3.addtag("automotive")
+    file3.addtag("image")
+
+    # List of all files to add to Excel doc
+
+    files = [file1, file2, file3]
+
+    # Set up Excel Doc
+
+    outputbook = Workbook()
+    worksheet = outputbook.active
+    worksheet['A1'] = "File Name"
+    worksheet['B1'] = "File Type"
+    worksheet['C1'] = "File Tag 1"
+    worksheet['D1'] = "File Tag 2"
+
+    # Add the file names, types, and tags to the sheet
+
+    fileCount = 2
+    for file in files:
+        worksheet.cell(row=fileCount, column=1, value=file.fileName)
+        worksheet.cell(row=fileCount, column=2, value=file.fileType)
+        tagCol = 3
+        for tag in file.tags:
+            worksheet.cell(row=fileCount, column=tagCol, value=tag)
+            tagCol += 1
+        fileCount += 1
+
+    # Save the doc
+    outputbook.save('DCMT_Results.xlsx')

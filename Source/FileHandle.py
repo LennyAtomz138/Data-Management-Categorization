@@ -9,13 +9,10 @@ import string
 class FileHandle:
     """A class that is used to manipulate (handle) the files themselves."""
 
-    fileName = ""
-    fileType = ""
-    tags = []
-
     def __init__(self, name, filetype):
         self.fileName = name
         self.fileType = filetype
+        self.tags = []
 
     def addtag(self, tag):
         self.tags.append(tag)
