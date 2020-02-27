@@ -13,6 +13,7 @@ def MainMenu():
 
     print("*=*" * 14)
     print("Database Management Categorization Tool")
+    # print("\t" * 2, "(DMCT)") <- This version shifts the logo over to fit CLI a little better.
     print("\t" * 3, " " * 2, "(DMCT)")
     print("*=*" * 14)
 
