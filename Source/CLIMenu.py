@@ -13,6 +13,7 @@ def MainMenu():
 
     print("*=*" * 14)
     print("Database Management Categorization Tool")
+    # print("\t" * 2, "(DMCT)") <- This version shifts the logo over to fit CLI a little better.
     print("\t" * 3, " " * 2, "(DMCT)")
     print("*=*" * 14)
 
@@ -20,7 +21,6 @@ def MainMenu():
         print("="*14, "Main Menu", "="*16)
         print("",
               "1 - Input Keyword(s) and Parse Documents\n",
-              "2 - Input Access Credentials\n",
               "0 - Exit DMCT")
         print("="*41)
         user_input = int(input("Enter Number: "))
@@ -34,13 +34,10 @@ def MainMenu():
             elif user_input == 1:
                 print("\n")
                 GetUserKeywords()
-            elif user_input == 2:
-                print("\n")
-                AccessCredentialsMenu()
             else:
                 print("Invalid input: Please try again.")
         except ValueError:
-            print("Invalid integer. Please enter a value between 0 and 2.")
+            print("Invalid integer. Please enter either 0 or 1.")
 
 
 def GetUserKeywords():
@@ -97,40 +94,3 @@ def GetUserKeywords():
             print("Invalid input: Please try again.")
     except ValueError:
         print("Invalid integer. Please enter a value between 0 and 1.")
-
-
-def AccessCredentialsMenu():
-    """
-    Used to input access credentials for the `aws configure` terminal command.
-    User will need to provide an Access Key and a Secret Key.
-    Both of those can be found within their IAM console at aws.amazon.com.
-    (IAM console > My Security Credentials > Access Keys)
-    :return:
-    """
-    print("="*8, "Access Credentials Menu", "="*8)
-
-    while True:
-        print("",
-              "1 - Input Access Credentials\n",
-              "0 - Return to the Main Menu")
-        print("=" * 41)
-
-        user_input = int(input("Enter Number: "))
-        try:
-            if user_input < 0 or user_input > 1:
-                raise ValueError
-            elif user_input == 0:
-                print("\n")
-                MainMenu()
-            elif user_input == 1:
-                access_key = input("Input Access Key: ")
-                secret_key = input("Input Secret Key: ")
-                print("This is still in the test phase.\n")
-                print("You entered:\n")
-                print("Access Key: ", access_key)
-                print("Secret Key: ", secret_key)
-                print("\n")
-            else:
-                print("Invalid input: Enter 0 or 1. \n")
-        except ValueError:
-            print("Invalid integer. Please enter a value between 0 and 1.")
