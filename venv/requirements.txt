@@ -1,3 +1,4 @@
+#TODO add new requirements Joe
 alembic==1.1.0
 APScheduler==3.6.1
 argcomplete==1.10.0

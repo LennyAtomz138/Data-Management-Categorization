@@ -1,7 +1,7 @@
 """
 An algorithm that is intended to analyze plain text (as opposed to graphs and the like).
 """
-
+#TODO there is an error where a keyerror is raised, needs to be caught
 
 class TextAlgorithm:
     """

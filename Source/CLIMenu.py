@@ -2,7 +2,7 @@
 CLI Menu is used to display the DMCT menu at application startup.
 It is called by Main.py.
 """
-from Source import TextractPDFVersion
+from Source import TextractPDFandDOCXVersion
 
 
 def MainMenu():
@@ -89,7 +89,7 @@ def GetUserKeywords():
             except ValueError:
                 print("Invalid integer. Please enter a value between 0 and 1.")
         elif user_input == 1:
-            TextractPDFVersion.Main(keyword_list)
+            TextractPDFandDOCXVersion.Main(keyword_list)
         else:
             print("Invalid input: Please try again.")
     except ValueError:

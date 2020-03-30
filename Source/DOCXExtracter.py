@@ -1,8 +1,9 @@
-import textract
+import textract, re, os
 
 def extractDOCX(local_filepath):
     text = textract.process(local_filepath)
-    #TODO perform text manips here to format the raw string into an array of words
-    text_array = []
-    print(text)
+    text = text.decode('utf-8')
+    text_array = re.split('\t|\n|\s',text)
+    text_array = list(filter(None, text_array))
+    os.remove(local_filepath)
     return text_array
