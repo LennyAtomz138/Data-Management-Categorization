@@ -13,9 +13,15 @@ class FileHandle:
     fileType = ""
     tags = []
 
-    def __init__(self, name, filetype):
+    def __init__(self, name):
         self.fileName = name
-        self.fileType = filetype
+        if self.fileName.endswith('.pdf'):
+            self.fileType = 'pdf'
+        elif self.fileName.endswith('.docx'):
+            self.fileType = 'docx'
+        else:
+            raise TypeError("Filename: " + self.fileName +
+                            "is not of type docx or pdf.  Please only use supported filetypes.")
 
     def addtag(self, tag):
         self.tags.append(tag)

@@ -1,0 +1,12 @@
+# file: ~/.gitignore_global
+.DS_Store
+.idea
+_windows/laf.xml
+aws.xml
+codestyles/Default.xml
+colors.scheme.xml
+debugger.xml
+inspection/Default.xml
+markdown.xml
+vcs.xml
+wsl.distributions.xml
