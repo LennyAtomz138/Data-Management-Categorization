@@ -2,8 +2,9 @@
 CLI Menu is used to display the DMCT menu at application startup.
 It is called by Main.py.
 """
-from Source import TextractPDFVersion, FileHandle, TextractPNGJPGVersion
+from Source import TextractPDFandDOCXVersion, FileHandle, TextractPNGJPGVersion
 from openpyxl import Workbook, load_workbook
+
 
 def MainMenu():
     """
@@ -18,13 +19,13 @@ def MainMenu():
     print("*=*" * 14)
 
     while True:
-        print("="*14, "Main Menu", "="*16)
+        print("=" * 14, "Main Menu", "=" * 16)
         print("",
               "1 - Input Keyword(s) and Parse Documents\n",
               "2 - Test Excel Tagging\n",
               "3 - Test Load Excel\n",
               "0 - Exit DMCT")
-        print("="*41)
+        print("=" * 41)
         user_input = int(input("Enter Number: "))
 
         try:
@@ -57,7 +58,7 @@ def GetUserKeywords():
     keyword_list = []
     keyword_counter = 0
 
-    print("="*8, "Keyword Entry Screen", "="*11)
+    print("=" * 8, "Keyword Entry Screen", "=" * 11)
     print("(Input '0' when finished)")
     print("=" * 41)
 
@@ -97,12 +98,13 @@ def GetUserKeywords():
             except ValueError:
                 print("Invalid integer. Please enter a value between 0 and 1.")
         elif user_input == 1:
-            TextractPDFVersion.Main(keyword_list)
+            TextractPDFandDOCXVersion.Main(keyword_list)
             #TextractPNGJPGVersion.Main(keyword_list)
         else:
             print("Invalid input: Please try again.")
     except ValueError:
         print("Invalid integer. Please enter a value between 0 and 1.")
+
 
 def TestExcelTagging():
     """
@@ -156,10 +158,11 @@ def TestExcelTagging():
     # Save the doc
     outputbook.save('DCMT_Results.xlsx')
 
+
 def TestExcelLoading():
     print("=" * 8, "Excel Loading Test", "=" * 8)
 
-    #path can also be a path to a excel file location
+    # Path can also be a path to a excel file location.
     path = 'DCMT_Results.xlsx'
 
     wb = load_workbook(path)
@@ -169,9 +172,9 @@ def TestExcelLoading():
         for j in range(1, ws.max_column + 1):
             c = ws.cell(row = i, column = j)
 
-            #a check that only exists because not all the headers are labeled
+            # A check that only exists because not all the headers are labelled.
             if c.value is None:
                 break
 
-            print(c.value.center(15), end = " ")
+            print(c.value.center(15), end=" ")
         print('\n')
