@@ -1,8 +1,12 @@
 # Analyzes text in a document stored in an S3 bucket. Display polygon box around text and angled text
 import boto3
 import io
+import boto3
 from io import BytesIO
 import sys
+import json
+import time
+from Source.Algorithms import TextAlgorithm
 
 import math
 from PIL import Image, ImageDraw, ImageFont
@@ -27,6 +31,9 @@ def process_text_analysis(bucket, document):
     stream = io.BytesIO(s3_response['Body'].read())
     image = Image.open(stream)
 
+    text_array = []
+
+
     # Analyze the document
     client = boto3.client('textract')
 
@@ -42,18 +49,31 @@ def process_text_analysis(bucket, document):
 
     # Create image showing bounding box/polygon the detected lines/text
     for block in blocks:
-
+        self.StoreBlockText(block)
         DisplayBlockInformation(block)
 
     return len(blocks)
 
+def StoreBlockText(self, block):
+        """
+        Used to display information from within a Textract block.
+        A Block represents items that are recognized in a document within a group of pixels close to each other.
+        :param block: The item returned by Textract.
+        :return:
+        """
+        if 'Text' in block:
+            self.text_array.append(block['Text'].lower())
 
-def main():
-    bucket = 
-    document = 
+
+def Main(incoming_keywords):
+    bucket = 'uconn-sdp-team11-unprocessed-docs'
+    document =
+
+    keywords = incoming_keywords
+
     block_count = process_text_analysis(bucket, document)
     print("Blocks detected: " + str(block_count))
 
 
 if __name__ == "__main__":
-    main()
+    Main()
