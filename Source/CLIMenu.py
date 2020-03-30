@@ -50,13 +50,13 @@ def GetUserKeywords():
     keyword_counter = 0
 
     print("="*8, "Keyword Entry Screen", "="*11)
-    print("(Input 'halt dmct' when finished)")
+    print("(Input '0' when finished)")
     print("=" * 41)
 
     while True:
         keyword_counter += 1
         user_input = input("Enter keyword # {counter}: ".format(counter=keyword_counter))
-        if user_input.lower() == 'halt dmct':
+        if user_input.lower() == '0':
             break
         else:
             keyword_list.append(user_input.lower())
