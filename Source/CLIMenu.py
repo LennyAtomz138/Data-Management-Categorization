@@ -104,6 +104,7 @@ def GetUserKeywords():
     except ValueError:
         print("Invalid integer. Please enter a value between 0 and 1.")
 
+
 def TestExcelTagging():
     """
     Proof of concept function for outputting tagged files into an Excel Document
@@ -155,6 +156,7 @@ def TestExcelTagging():
 
     # Save the doc
     outputbook.save('DCMT_Results.xlsx')
+
 
 def TestExcelLoading():
     print("=" * 8, "Excel Loading Test", "=" * 8)
