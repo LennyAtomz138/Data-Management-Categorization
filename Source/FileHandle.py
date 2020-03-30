@@ -6,7 +6,7 @@ Class that handles all the individual files.
 import string
 
 
-class FileHandle:
+class FileHandler:
     """A class that is used to manipulate (handle) the files themselves."""
 
     fileName = ""

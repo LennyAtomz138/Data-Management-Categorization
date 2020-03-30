@@ -9,6 +9,7 @@ import sys
 import time
 from Source.Algorithms import TextAlgorithm
 from Source import FileHandle
+from Source import DOCXExtracter
 
 
 class ProcessType:
@@ -244,12 +245,12 @@ def Main(incoming_keywords):
     """Runs Textract tool on document that is located in the specified AWS S3 bucket."""
     roleArn = 'arn:aws:iam::172734287275:role/aws-textract-role'
     bucket = 'uconn-sdp-team11-unprocessed-docs'
-    filename = 'Test3PagePDF_Seven_Ways_to_Apply_the_Cyber_Kill_Chain_with_a_Threat_Intelligence_Platform-page-003.pdf'
-    document = FileHandle(filename)
+    filename = 'An AWS Network Monitoring Comparison.docx'
+    document = FileHandle.FileHandler(filename)
     keywords = incoming_keywords
 
     if document.fileType == "pdf":
-        analyzer = DocumentProcessor(roleArn, bucket, document)
+        analyzer = DocumentProcessor(roleArn, bucket, document.fileName)
         analyzer.CreateTopicAndQueue()
         analyzer.ProcessDocument(ProcessType.DETECTION)
         analyzer.DeleteTopicAndQueue()
@@ -266,7 +267,7 @@ def Main(incoming_keywords):
                 print("The object does not exist.")
             else:
                 raise
-        text_array = extractDOCX(tempfile)
+        text_array = DOCXExtracter.extractDOCX(tempfile)
 
 
     # TODO: Comment out these <TEST> print statement when ready.

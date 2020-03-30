@@ -2,8 +2,12 @@
 CLI Menu is used to display the DMCT menu at application startup.
 It is called by Main.py.
 """
+<<<<<<< HEAD
 from Source import TextractPDFVersion, FileHandle, TextractPNGJPGVersion
 from openpyxl import Workbook, load_workbook
+=======
+from Source import TextractPDFandDOCXVersion
+>>>>>>> 35cfa8ba373a8faa55591c50ba7698141e7d070b
 
 
 def MainMenu():
@@ -59,13 +63,13 @@ def GetUserKeywords():
     keyword_counter = 0
 
     print("="*8, "Keyword Entry Screen", "="*11)
-    print("(Input 'halt dmct' when finished)")
+    print("(Input '0' when finished)")
     print("=" * 41)
 
     while True:
         keyword_counter += 1
         user_input = input("Enter keyword # {counter}: ".format(counter=keyword_counter))
-        if user_input.lower() == 'halt dmct':
+        if user_input.lower() == '0':
             break
         else:
             keyword_list.append(user_input.lower())
@@ -98,7 +102,9 @@ def GetUserKeywords():
             except ValueError:
                 print("Invalid integer. Please enter a value between 0 and 1.")
         elif user_input == 1:
-            TextractPDFVersion.Main(keyword_list)
+            #TODO make it good instead of shitty
+
+            TextractPDFandDOCXVersion.Main(keyword_list)
         else:
             print("Invalid input: Please try again.")
     except ValueError:
