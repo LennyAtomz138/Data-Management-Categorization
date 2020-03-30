@@ -40,7 +40,8 @@ def MoveCopiedFile(filename, source_bucket, destination_bucket):
 
 def ViewBucketFiles(bucket):
     """
-    Prints a (list or dictionary) of S3 file objects in 'bucket'.
+    Creates a dictionary of S3 file objects that are found within 'bucket'.
+    Prints a corresponding numbered list of those objects to the console.
     :param bucket: the S3 bucket of interest
     :return: dictionary of bucket items
     """
