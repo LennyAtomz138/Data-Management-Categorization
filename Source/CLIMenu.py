@@ -2,8 +2,9 @@
 CLI Menu is used to display the DMCT menu at application startup.
 It is called by Main.py.
 """
-from Source import TextractPDFVersion, FileHandle, TextractPNGJPGVersion
+from Source import TextractPDFVersion, FileHandle, ManageBuckets, TextractPNGJPGVersion
 from openpyxl import Workbook, load_workbook
+
 
 def MainMenu():
     """

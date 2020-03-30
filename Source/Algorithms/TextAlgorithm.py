@@ -18,8 +18,8 @@ def find_num_matches(keywords, text_array):
     :return:
     """
     text_dictionary = {}
-    for word in keywords:
-        text_dictionary.update({word: 0})
+    for item in keywords:
+        text_dictionary.update({item: 0})
 
     for word in text_array:
         if word.lower() in keywords:

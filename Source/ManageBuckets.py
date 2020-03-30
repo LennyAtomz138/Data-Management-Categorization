@@ -10,38 +10,61 @@ import boto3
 client = boto3.client('s3')
 
 practice_src_bucket = 'uconn-sdp-team11-unprocessed-docs'
-practice_object = 'Test3PagePDF_Seven_Ways_to_Apply_the_Cyber_Kill_Chain_with_a_Threat_Intelligence_Platform-page-003.pdf'
+practice_object = 'Test3PagePDF_Seven_Ways_to_Apply_the_Cyber_Kill_Chain_'\
+                  'with_a_Threat_Intelligence_Platform-page-003.pdf'
 practice_dst_bucket = 'uconn-sdp-team11-tagged-docs'
 
 
 # TODO: Ensure that the file object KEY is passed as the filename.
-def MoveFile(filename, source_bucket, destination_bucket):
+def MoveCopiedFile(filename, source_bucket, destination_bucket):
     """
-    This function moves files from source bucket to destination bucket.
+    This function copies file from source bucket to destination bucket.
     :param filename: AWS key of file object to be moved
     :param source_bucket: original location of the file object
     :param destination_bucket: intended destination for the file object
     :return:
     """
-    filename = filename
-    source_bucket = source_bucket
-    destination_bucket = destination_bucket
 
-    src_bucket_object_response = client.get_object(
+    get_object_response = client.get_object(
         Bucket=source_bucket,
         Key=filename
     )
 
-    dst_bucket_object_response = client.put_object(
+    put_object_response = client.put_object(
         Bucket=destination_bucket,
         Key=filename
     )
 
-    return src_bucket_object_response, dst_bucket_object_response
+    return get_object_response, put_object_response
 
 
-def ViewFile():
-    pass
+def ViewBucketFiles(bucket):
+    """
+    Prints a (list or dictionary) of S3 file objects in 'bucket'.
+    :param bucket: the S3 bucket of interest
+    :return: dictionary of bucket items
+    """
+    j = 1
+    file_titles = {}
+    kwargs = {'Bucket': bucket}
+
+    while True:
+        i = 1
+        response = client.list_objects_v2(**kwargs)
+        for obj in response['Contents']:
+            file_titles.update({i: obj['Key']})
+            i += 1
+        try:
+            kwargs['ContinuationToken'] = response['NextContinuationToken']
+        except KeyError:
+            print("Encountered a KeyError while attempting to parse S3 bucket for file object keys.")
+            break
+
+    for title in file_titles:
+        print(j, ":", file_titles[title])
+        j += 1
+
+    j = 0
 
 
 def ChooseFilesToScan():
@@ -49,8 +72,11 @@ def ChooseFilesToScan():
 
 
 # TEST CODE BELOW:
-test_file_to_move = 'LM-White-Paper-Defendable-Architectures.pdf'
-MoveFile(filename=test_file_to_move,
-         source_bucket=practice_src_bucket,
-         destination_bucket=practice_dst_bucket)
+#------------------------------------------------------------------#
+# test_file_to_move = 'LM-White-Paper-Defendable-Architectures.pdf'
+# MoveCopiedFile(filename=test_file_to_move,
+#                source_bucket=practice_src_bucket,
+#                destination_bucket=practice_dst_bucket)
+#------------------------------------------------------------------#
+# ViewBucketFiles(practice_src_bucket)
 print("Made it this far.")
