@@ -246,7 +246,7 @@ def Main(incoming_keywords):
     roleArn = 'arn:aws:iam::172734287275:role/aws-textract-role'
     bucket = 'uconn-sdp-team11-unprocessed-docs'
     filename = 'An AWS Network Monitoring Comparison.docx'
-    document = FileHandle.FileHandler(filename)
+    document = FileHandle.FileHandle(filename)
     keywords = incoming_keywords
 
     if document.fileType == "pdf":
@@ -258,7 +258,7 @@ def Main(incoming_keywords):
     else:
         #TODO download file from AWS and get its local address
         s3 = boto3.resource('s3')
-        tempfile =  'temp.docx'
+        tempfile = 'temp.docx'
 
         try:
             s3.Bucket(bucket).download_file(filename, tempfile)
