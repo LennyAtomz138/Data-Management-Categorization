@@ -23,6 +23,6 @@ def find_num_matches(keywords, text_array):
 
     for word in text_array:
         if word.lower() in keywords:
-            text_dictionary[word] += 1
+            text_dictionary[word.lower()] += 1
 
     print("<TEST>: Number of observed matches: ", text_dictionary)

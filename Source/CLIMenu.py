@@ -89,6 +89,8 @@ def GetUserKeywords():
             except ValueError:
                 print("Invalid integer. Please enter a value between 0 and 1.")
         elif user_input == 1:
+            #TODO make it good instead of shitty
+
             TextractPDFandDOCXVersion.Main(keyword_list)
         else:
             print("Invalid input: Please try again.")
