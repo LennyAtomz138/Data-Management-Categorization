@@ -3,10 +3,13 @@
 # For set up information, see https://docs.aws.amazon.com/textract/latest/dg/async.html
 
 import boto3
+import botocore
 import json
 import sys
 import time
 from Source.Algorithms import TextAlgorithm
+from Source import FileHandle
+from Source import DOCXExtracter
 
 
 class ProcessType:
@@ -242,22 +245,38 @@ def Main(incoming_keywords):
     """Runs Textract tool on document that is located in the specified AWS S3 bucket."""
     roleArn = 'arn:aws:iam::172734287275:role/aws-textract-role'
     bucket = 'uconn-sdp-team11-unprocessed-docs'
-    document = 'Test3PagePDF_Seven_Ways_to_Apply_the_Cyber_Kill_Chain_with_a_Threat_Intelligence_Platform-page-003.pdf'
-
+    filename = 'An AWS Network Monitoring Comparison.docx'
+    document = FileHandle.FileHandle(filename)
     keywords = incoming_keywords
 
-    analyzer = DocumentProcessor(roleArn, bucket, document)
-    analyzer.CreateTopicAndQueue()
-    analyzer.ProcessDocument(ProcessType.DETECTION)
-    analyzer.DeleteTopicAndQueue()
+    if document.fileType == "pdf":
+        analyzer = DocumentProcessor(roleArn, bucket, document.fileName)
+        analyzer.CreateTopicAndQueue()
+        analyzer.ProcessDocument(ProcessType.DETECTION)
+        analyzer.DeleteTopicAndQueue()
+        text_array = analyzer.text_array
+    else:
+        #TODO download file from AWS and get its local address
+        s3 = boto3.resource('s3')
+        tempfile = 'temp.docx'
+
+        try:
+            s3.Bucket(bucket).download_file(filename, tempfile)
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "404":
+                print("The object does not exist.")
+            else:
+                raise
+        text_array = DOCXExtracter.extractDOCX(tempfile)
+
 
     # TODO: Comment out these <TEST> print statement when ready.
-    print("<TEST>: Here's the text array:\n", analyzer.text_array)
+    print("<TEST>: Here's the text array:\n", text_array)
     print("<TEST>: Here are the keywords:\n", keywords)
 
     # Call TextAlgorithm here and pass it the keywords and text_array.
     find_matches = TextAlgorithm
-    find_matches.find_num_matches(keywords, analyzer.text_array)
+    find_matches.find_num_matches(keywords, text_array)
 
 
 # TODO: Figure out how to keep Main Menu from launching after attempting to exit program,
