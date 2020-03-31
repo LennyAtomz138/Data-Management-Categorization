@@ -3,6 +3,7 @@ CLI Menu is used to display the DMCT menu at application startup.
 It is called by Main.py.
 """
 from Source import TextractPDFandDOCXVersion, FileHandle, TextractPNGJPGVersion
+from Source.ManageBuckets import ViewAndSelectBucketFiles
 from openpyxl import Workbook, load_workbook
 
 
@@ -18,18 +19,23 @@ def MainMenu():
     print("\t" * 3, " " * 2, "(DMCT)")
     print("*=*" * 14)
 
+    # TODO: Add a constant notifier that shows what bucket user is in.
+    # TODO: Add intermediate messages in-between steps to keep user informed.
+    # TODO: Add nested feature to Main Menu s.t. user can view bucket, then select bucket, etc.
     while True:
         print("=" * 14, "Main Menu", "=" * 16)
         print("",
               "1 - Input Keyword(s) and Parse Documents\n",
-              "2 - Test Excel Tagging\n",
-              "3 - Test Load Excel\n",
+              "2 - View & Select Bucket\n",
+              "3 - View & Select Bucket Files\n",
+              "4 - Test Excel Tagging\n",
+              "5 - Test Load Excel\n",
               "0 - Exit DMCT")
         print("=" * 41)
         user_input = int(input("Enter Number: "))
 
         try:
-            if user_input < 0 or user_input > 3:
+            if user_input < 0 or user_input > 5:
                 raise ValueError
             elif user_input == 0:
                 print("Exiting the Data Management Categorization Tool")
@@ -39,14 +45,20 @@ def MainMenu():
                 GetUserKeywords()
             elif user_input == 2:
                 print("\n")
-                TestExcelTagging()
+                # TODO: Add ViewAndSelectBucket() here...
             elif user_input == 3:
+                print("\n")
+                ViewAndSelectBucketFiles()
+            elif user_input == 4:
+                print("\n")
+                TestExcelTagging()
+            elif user_input == 5:
                 print("\n")
                 TestExcelLoading()
             else:
                 print("Invalid input: Please try again.")
         except ValueError:
-            print("Invalid integer. Please enter either 0 or 1.")
+            print("Invalid integer. Please enter valid input.")
 
 
 def GetUserKeywords():

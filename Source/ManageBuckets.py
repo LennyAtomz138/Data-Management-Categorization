@@ -38,14 +38,15 @@ def MoveCopiedFile(filename, source_bucket, destination_bucket):
     return get_object_response, put_object_response
 
 
-def ViewBucketFiles(bucket):
+# TODO: Add a way to select file based on the files that are viewed.
+def ViewAndSelectBucketFiles(bucket):
     """
     Creates a dictionary of S3 file objects that are found within 'bucket'.
     Prints a corresponding numbered list of those objects to the console.
     :param bucket: the S3 bucket of interest
-    :return: dictionary of bucket items
+    :return: selected bucket
     """
-    j = 1
+
     file_titles = {}
     kwargs = {'Bucket': bucket}
 
@@ -61,11 +62,26 @@ def ViewBucketFiles(bucket):
             print("Encountered a KeyError while attempting to parse S3 bucket for file object keys.")
             break
 
-    for title in file_titles:
-        print(j, ":", file_titles[title])
-        j += 1
-
-    j = 0
+    while True:
+        j = 1
+        for title in file_titles:
+            print(j, ":", file_titles[title])
+            j += 1
+        print("",
+              "1 - Select Bucket File\n",
+              "0 - Exit Bucket File Viewer\n")
+        user_input = str(input("Enter Number: "))
+        try:
+            if user_input < 0 or user_input > 1:
+                raise ValueError
+            elif user_input == 0:
+                print("Exiting the View and Select Bucket Files Viewer")
+            elif user_input == 1:
+                chosen_file_number = int(input("Enter the corresponding file number: "))
+                chosen_file = file_titles[chosen_file_number]
+                return chosen_file
+        except ValueError:
+            print("Invalid integer. Please enter valid input.")
 
 
 def ChooseFilesToScan():
