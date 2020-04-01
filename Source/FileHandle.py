@@ -3,7 +3,6 @@ Class that handles all the individual files.
 -> Holds all of the information that a file would have.
 --> Filename, file doc_type, potential tags, etc.
 """
-import string
 
 
 class FileHandle:

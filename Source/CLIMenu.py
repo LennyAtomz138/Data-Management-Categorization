@@ -3,8 +3,12 @@ CLI Menu is used to display the DMCT menu at application startup.
 It is called by Main.py.
 """
 from Source import TextractPDFandDOCXVersion, FileHandle, TextractPNGJPGVersion
-from Source.ManageBuckets import ViewAndSelectBucketFiles
+from Source.ManageBuckets import ViewBucketFiles, SelectBucketFile, SelectBucket, ViewBuckets
 from openpyxl import Workbook, load_workbook
+
+# These global variables will be referenced within functions below.
+current_bucket = None  # Chosen by user with SelectBucket()
+selected_filename = None  # Chose by user with SelectBucketFile()T
 
 
 def MainMenu():
@@ -12,6 +16,10 @@ def MainMenu():
     The Main Menu for the DMCT program that contains submenus for user navigation.
     :return:
     """
+
+    # TODO: Figure out how to handle current_bucket correctly.
+    # TODO: Goal: Configure so that it uses the default bucket in TextractPDFandDOCXVersion (in Main) if
+    # TODO:       ... the user doesn't specifically select one.
 
     print("*=*" * 14)
     print("Database Management Categorization Tool")
@@ -30,7 +38,8 @@ def MainMenu():
               "3 - View & Select Bucket Files\n",
               "4 - Test Excel Tagging\n",
               "5 - Test Load Excel\n",
-              "0 - Exit DMCT")
+              "0 - Exit DMCT\n\n",
+              "Current Bucket: ", current_bucket)
         print("=" * 41)
         user_input = int(input("Enter Number: "))
 
@@ -45,10 +54,13 @@ def MainMenu():
                 GetUserKeywords()
             elif user_input == 2:
                 print("\n")
-                # TODO: Add ViewAndSelectBucket() here...
+                ViewBuckets()
             elif user_input == 3:
                 print("\n")
-                ViewAndSelectBucketFiles()
+                if current_bucket is None:
+                    ViewBuckets()
+                else:
+                    ViewBucketFiles(current_bucket)
             elif user_input == 4:
                 print("\n")
                 TestExcelTagging()
@@ -69,6 +81,19 @@ def GetUserKeywords():
     """
     keyword_list = []
     keyword_counter = 0
+    global current_bucket
+    global selected_filename
+
+    # First, ensure that current bucket and filename are selected.
+    if current_bucket is None:
+        current_bucket = SelectBucket(ViewBuckets())
+    else:
+        current_bucket = current_bucket
+
+    if selected_filename is None:
+        selected_filename = SelectBucketFile(ViewBuckets())
+    else:
+        selected_filename = selected_filename
 
     print("=" * 8, "Keyword Entry Screen", "=" * 11)
     print("(Input '0' when finished)")
@@ -110,8 +135,16 @@ def GetUserKeywords():
             except ValueError:
                 print("Invalid integer. Please enter a value between 0 and 1.")
         elif user_input == 1:
-            TextractPDFandDOCXVersion.Main(keyword_list)
-            #TextractPNGJPGVersion.Main(keyword_list)
+            if selected_filename.endswith('.jpg') or selected_filename.endswith('.png'):
+                TextractPNGJPGVersion.Main(keyword_list)
+            elif selected_filename.endswith('.docx') or selected_filename.endswith('.pdf'):
+                TextractPDFandDOCXVersion.Main(incoming_bucket=current_bucket,
+                                               incoming_filename=selected_filename,
+                                               incoming_keywords=keyword_list)
+            else:
+                print("DMCT currently only supports the following formats:")
+                print("JPG, PNG, PDF, and DOCX")
+                ViewBucketFiles(current_bucket)
         else:
             print("Invalid input: Please try again.")
     except ValueError:

@@ -1,4 +1,5 @@
-# Analyzes text in a document stored in an S3 bucket. Display polygon box around text and angled text
+""" Analyzes text in a document stored in an S3 bucket. Can display polygon box around text and angled text. """
+
 import boto3
 import io
 import boto3
@@ -6,6 +7,7 @@ from io import BytesIO
 import sys
 import json
 import time
+from Source import CLIMenu
 from Source.Algorithms import TextAlgorithm
 
 import math
@@ -13,15 +15,22 @@ from PIL import Image, ImageDraw, ImageFont
 
 text_array = []
 
-# Displays information about a block returned by text detection and text analysis
-def DisplayBlockInformation(block):
 
+def DisplayBlockInformation(block):
+    """
+    Displays information about a block returned by text detection and text analysis.
+    :param block:
+    :return:
+    """
     if 'Text' in block:
         print('    Detected: ' + block['Text'])
     print()
 
 
 def ProcessDoc(bucket, document):
+
+    print("\nCurrently processing the requested document...")
+
     # Get the document from S3
     s3_connection = boto3.resource('s3')
 
@@ -42,7 +51,7 @@ def ProcessDoc(bucket, document):
     blocks = response['Blocks']
     width, height = image.size
     draw = ImageDraw.Draw(image)
-    print('Detected Document Text')
+    print('Successfully detected document text.\n')
 
     # Create image showing bounding box/polygon the detected lines/text
     for block in blocks:
@@ -51,15 +60,16 @@ def ProcessDoc(bucket, document):
 
     return len(blocks)
 
+
 def StoreBlockText(block):
-        """
-        Used to display information from within a Textract block.
-        A Block represents items that are recognized in a document within a group of pixels close to each other.
-        :param block: The item returned by Textract.
-        :return:
-        """
-        if 'Text' in block:
-            text_array.append(block['Text'].lower())
+    """
+    Used to display information from within a Textract block.
+    A Block represents items that are recognized in a document within a group of pixels close to each other.
+    :param block: The item returned by Textract.
+    :return:
+    """
+    if 'Text' in block:
+        text_array.append(block['Text'].lower())
 
 
 def Main(incoming_keywords):
@@ -68,13 +78,11 @@ def Main(incoming_keywords):
 
     keywords = incoming_keywords
 
-    #print("<TEST>: Here are the keywords:\n", keywords)
+    print("<TEST>: Here are the keywords:\n", keywords)
 
     block_count = ProcessDoc(bucket, document)
 
     find_matches = TextAlgorithm
     find_matches.find_num_matches(keywords, text_array)
-
-
-if __name__ == "__main__":
-    Main()
+    print("")
+    CLIMenu.MainMenu()

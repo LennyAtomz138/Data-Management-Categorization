@@ -10,6 +10,7 @@ import time
 from Source.Algorithms import TextAlgorithm
 from Source import FileHandle
 from Source import DOCXExtracter
+from Source import CLIMenu
 
 
 class ProcessType:
@@ -241,11 +242,22 @@ class DocumentProcessor:
                     finished = True
 
 
-def Main(incoming_keywords):
+def Main(incoming_bucket, incoming_filename, incoming_keywords):
     """Runs Textract tool on document that is located in the specified AWS S3 bucket."""
     roleArn = 'arn:aws:iam::172734287275:role/aws-textract-role'
-    bucket = 'uconn-sdp-team11-unprocessed-docs'
-    filename = 'An AWS Network Monitoring Comparison.docx'
+
+    # The goal is to have the bucket selected prior to this step.
+    if incoming_bucket is None:
+        bucket = 'uconn-sdp-team11-unprocessed-docs'
+    else:
+        bucket = incoming_bucket
+
+    # The goal is to have the filename selected prior to this step.
+    if incoming_filename is None:
+        filename = 'An AWS Network Monitoring Comparison.docx'
+    else:
+        filename = incoming_filename
+
     document = FileHandle.FileHandle(filename)
     keywords = incoming_keywords
 
@@ -272,15 +284,16 @@ def Main(incoming_keywords):
 
     # TODO: Comment out these <TEST> print statement when ready.
     print("<TEST>: Here's the text array:\n", text_array)
-    print("<TEST>: Here are the keywords:\n", keywords)
+    print("<TEST>: Here are the (sorted) keywords:\n", keywords)
 
     # Call TextAlgorithm here and pass it the keywords and text_array.
     find_matches = TextAlgorithm
     find_matches.find_num_matches(keywords, text_array)
-
+    print("\n")
+    CLIMenu.MainMenu()
 
 # TODO: Figure out how to keep Main Menu from launching after attempting to exit program,
-#  note that this seems to happen after the Textracter does it job and the user is
+#  note that this seems to happen after the Textractor does it job and the user is
 #  returned to the Main Menu.
-if __name__ == "__main__":
-    Main()
+# if __name__ == "__main__":
+#     Main()
