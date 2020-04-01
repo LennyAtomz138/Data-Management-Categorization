@@ -2,12 +2,13 @@
 from Source import FileHandle, CLIMenu
 from openpyxl import Workbook, load_workbook
 
-def ExcelMenu():
+def ExcelMenu(text_dictionary = {}):
     print("=" * 8, "Excel Manager", "=" * 8)
     while True:
         print("1 - Test Excel Tagging")
         print("2 - Test Excel Loading")
         print("0 - Quit to Main Menu\n")
+        print("Current Dictionary Contents: ", text_dictionary)
         ok_to_exit = int(input("Enter Number: "))
         if ok_to_exit < 0 or ok_to_exit > 2:
             print("Invalid input: Please try again.")
@@ -16,14 +17,14 @@ def ExcelMenu():
             print("\n")
             CLIMenu.MainMenu()
         elif ok_to_exit == 1:
-            TestExcelTagging()
+            TestExcelTagging(text_dictionary)
         elif ok_to_exit == 2:
             TestExcelLoading()
 
 def ExcelFileSelection():
     pass
 
-def TestExcelTagging():
+def TestExcelTagging(text_dictionary = {}):
     #does not work if the Excel file is opened
     """
     Proof of concept function for outputting tagged files into an Excel Document
@@ -32,6 +33,10 @@ def TestExcelTagging():
     :return:
     """
     print("=" * 8, "Excel Tagging Test", "=" * 8)
+
+#    file = FileHandle.FileHandle(CLIMenu.selected_filename)
+#    print(file.fileName)
+#    print(file.fileType)
 
     # Test files
 

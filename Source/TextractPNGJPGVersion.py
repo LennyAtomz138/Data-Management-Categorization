@@ -101,4 +101,4 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
             print("\n")
             CLIMenu.MainMenu()
         elif ok_to_exit == 1:  # Okay to Proceed
-            ExcelManager.ExcelMenu()
+            ExcelManager.ExcelMenu(text_dictionary)
