@@ -300,7 +300,7 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
             raise ValueError
         elif ok_to_exit == 0:
             print("\n")
-            #CLIMenu.MainMenu()
+            # CLIMenu.MainMenu()
             break
         elif ok_to_exit == 1:  # Okay to Proceed
             ExcelManager.ExcelMenu(text_dictionary)
