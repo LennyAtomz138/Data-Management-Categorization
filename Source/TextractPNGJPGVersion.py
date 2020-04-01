@@ -1,13 +1,8 @@
 """ Analyzes text in a document stored in an S3 bucket. Can display polygon box around text and angled text. """
 
-import boto3
 import io
 import boto3
-from io import BytesIO
-import sys
-import json
-import time
-from Source import CLIMenu
+from Source import CLIMenu, FileHandle
 from Source.Algorithms import TextAlgorithm
 
 import math
@@ -53,10 +48,9 @@ def ProcessDoc(bucket, document):
     draw = ImageDraw.Draw(image)
     print('Successfully detected document text.\n')
 
-    # Create image showing bounding box/polygon the detected lines/text
+
     for block in blocks:
         StoreBlockText(block)
-        #DisplayBlockInformation(block)
 
     return len(blocks)
 
@@ -72,17 +66,28 @@ def StoreBlockText(block):
         text_array.append(block['Text'].lower())
 
 
-def Main(incoming_keywords):
-    bucket = 'uconn-sdp-team11-unprocessed-docs'
-    document = 'AWS-Achieves_FED-Ramp-JPEG.jpg'
+def Main(incoming_bucket, incoming_filename, incoming_keywords):
+    # The goal is to have the bucket selected prior to this step.
+    if incoming_bucket is None:
+        bucket = 'uconn-sdp-team11-unprocessed-docs'
+    else:
+        bucket = incoming_bucket
 
+    # The goal is to have the filename selected prior to this step.
+    if incoming_filename is None:
+        filename = 'AWS-Achieves_FED-Ramp-JPEG.jpg'
+    else:
+        filename = incoming_filename
+
+    document = FileHandle.FileHandle(filename)
     keywords = incoming_keywords
 
-    print("<TEST>: Here are the keywords:\n", keywords)
+    block_count = ProcessDoc(bucket, document.fileName)
 
-    block_count = ProcessDoc(bucket, document)
+    print("<TEST>: Here's the text array:\n", text_array)
+    print("<TEST>: Here are the (sorted) keywords:\n", keywords)
 
     find_matches = TextAlgorithm
     find_matches.find_num_matches(keywords, text_array)
-    print("")
+    print("\n")
     CLIMenu.MainMenu()
