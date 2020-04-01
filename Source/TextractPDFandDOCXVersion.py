@@ -291,7 +291,7 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
     find_matches = TextAlgorithm
     text_dictionary = find_matches.find_num_matches(keywords, text_array)
     while True:
-        print("\nWould you like to tag the scanned document?\n")
+        print("Would you like to tag the scanned document?\n")
         print("1 - Okay to Proceed")
         print("0 - Quit to Main Menu\n")
         ok_to_exit = int(input("Enter Number: "))
@@ -300,10 +300,9 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
             raise ValueError
         elif ok_to_exit == 0:
             print("\n")
-            # CLIMenu.MainMenu()
             break
         elif ok_to_exit == 1:  # Okay to Proceed
-            ExcelManager.ExcelMenu(text_dictionary)
+            ExcelManager.Main(text_dictionary)
 
 # TODO: Figure out how to keep Main Menu from launching after attempting to exit program,
 #  note that this seems to happen after the Textractor does it job and the user is

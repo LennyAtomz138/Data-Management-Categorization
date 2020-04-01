@@ -2,7 +2,7 @@
 from Source import FileHandle, CLIMenu
 from openpyxl import Workbook, load_workbook
 
-def ExcelMenu(text_dictionary = {}):
+def Main(text_dictionary = {}):
     print("=" * 8, "Excel Manager", "=" * 8)
     while True:
         print("1 - Test Excel Tagging")
@@ -15,7 +15,7 @@ def ExcelMenu(text_dictionary = {}):
             raise ValueError
         elif ok_to_exit == 0:
             print("\n")
-            CLIMenu.MainMenu()
+            break
         elif ok_to_exit == 1:
             TestExcelTagging(text_dictionary)
         elif ok_to_exit == 2:

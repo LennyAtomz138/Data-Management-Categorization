@@ -56,7 +56,7 @@ def MainMenu():
                     ViewBucketFiles(current_bucket)
             elif user_input == 4:
                 print("\n")
-                ExcelManager.ExcelMenu()
+                ExcelManager.Main()
             else:
                 print("Invalid input: Please try again.")
         except ValueError:
