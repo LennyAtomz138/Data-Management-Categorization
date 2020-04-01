@@ -291,7 +291,7 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
     find_matches = TextAlgorithm
     text_dictionary = find_matches.find_num_matches(keywords, text_array)
     while True:
-        print("Would you like to tag the scanned document?\n")
+        print("\nWould you like to tag the scanned document?\n")
         print("1 - Okay to Proceed")
         print("0 - Quit to Main Menu\n")
         ok_to_exit = int(input("Enter Number: "))
@@ -300,7 +300,8 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
             raise ValueError
         elif ok_to_exit == 0:
             print("\n")
-            CLIMenu.MainMenu()
+            #CLIMenu.MainMenu()
+            break
         elif ok_to_exit == 1:  # Okay to Proceed
             ExcelManager.ExcelMenu()
 

@@ -18,13 +18,14 @@ def MainMenu():
 
     print("*=*" * 14)
     print("Database Management Categorization Tool")
-    # print("\t" * 2, "(DMCT)") <- This version shifts the logo over to fit CLI a little better.
-    print("\t" * 3, " " * 2, "(DMCT)")
+    print("\t" * 2, "(DMCT)")  # <- This version shifts the logo over to fit CLI a little better.
+    # print("\t" * 3, " " * 2, "(DMCT)")
     print("*=*" * 14)
 
     # TODO: Add a constant notifier that shows what bucket user is in.
     # TODO: Add intermediate messages in-between steps to keep user informed.
-    while True:
+    flag = True
+    while flag is True:
         print("=" * 14, "Main Menu", "=" * 16)
         print("",
               "1 - Input Keyword(s) and Parse Documents\n",
@@ -41,6 +42,7 @@ def MainMenu():
                 raise ValueError
             elif user_input == 0:
                 print("Exiting the Data Management Categorization Tool")
+                flag = False
                 break
             elif user_input == 1:
                 print("\n")

@@ -31,7 +31,8 @@ def ViewBuckets():
         bucket_number += 1
 
     print("*=*" * 14)
-    print("\t\t  Numbered Bucket List")
+    print("\t", " Numbered Bucket List")
+    # print("\t\t  Numbered Bucket List")
     print("*=*" * 14)
     bucket_number = 1
     for title in bucket_titles:
@@ -164,6 +165,7 @@ def SelectBucketFile(viewed_file_titles):
                 raise ValueError
             elif ok_to_exit == 0:
                 CLIMenu.MainMenu()
+                break
             elif ok_to_exit == 1:
                 CLIMenu.GetUserKeywords()
             elif ok_to_exit == 2:
