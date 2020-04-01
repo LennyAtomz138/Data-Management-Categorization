@@ -30,15 +30,14 @@ def MainMenu():
               "1 - Input Keyword(s) and Parse Documents\n",
               "2 - View & Select Bucket\n",
               "3 - View & Select Bucket Files\n",
-              "4 - Test Excel Tagging\n",
-              "5 - Test Load Excel\n",
+              "4 - Excel Manager\n",
               "0 - Exit DMCT\n\n",
               "Current Bucket: ", current_bucket)
         print("=" * 41)
         user_input = int(input("Enter Number: "))
 
         try:
-            if user_input < 0 or user_input > 5:
+            if user_input < 0 or user_input > 4:
                 raise ValueError
             elif user_input == 0:
                 print("Exiting the Data Management Categorization Tool")
@@ -57,10 +56,7 @@ def MainMenu():
                     ViewBucketFiles(current_bucket)
             elif user_input == 4:
                 print("\n")
-                ExcelManager.TestExcelTagging()
-            elif user_input == 5:
-                print("\n")
-                ExcelManager.TestExcelLoading()
+                ExcelManager.ExcelMenu()
             else:
                 print("Invalid input: Please try again.")
         except ValueError:

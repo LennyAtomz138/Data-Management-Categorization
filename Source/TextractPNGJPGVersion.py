@@ -2,7 +2,7 @@
 
 import io
 import boto3
-from Source import CLIMenu, FileHandle
+from Source import CLIMenu, FileHandle, ExcelManager
 from Source.Algorithms import TextAlgorithm
 
 import math
@@ -88,6 +88,17 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
     print("<TEST>: Here are the (sorted) keywords:\n", keywords)
 
     find_matches = TextAlgorithm
-    find_matches.find_num_matches(keywords, text_array)
-    print("\n")
-    CLIMenu.MainMenu()
+    text_dictionary = find_matches.find_num_matches(keywords, text_array)
+    while True:
+        print("Would you like to tag the scanned document?\n")
+        print("1 - Okay to Proceed")
+        print("0 - Quit to Main Menu\n")
+        ok_to_exit = int(input("Enter Number: "))
+        if ok_to_exit < 0 or ok_to_exit > 1:
+            print("Invalid input: Please try again.")
+            raise ValueError
+        elif ok_to_exit == 0:
+            print("\n")
+            CLIMenu.MainMenu()
+        elif ok_to_exit == 1:  # Okay to Proceed
+            ExcelManager.ExcelMenu()

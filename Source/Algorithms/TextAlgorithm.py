@@ -20,3 +20,4 @@ def find_num_matches(keywords, text_array):
             text_dictionary[word.lower()] += 1
 
     print("<TEST>: Number of observed matches: \n", text_dictionary)
+    return text_dictionary
