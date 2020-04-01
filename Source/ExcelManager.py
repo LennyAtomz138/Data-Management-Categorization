@@ -2,7 +2,8 @@
 from Source import FileHandle, CLIMenu
 from openpyxl import Workbook, load_workbook
 
-def Main(text_dictionary = {}):
+
+def Main(text_dictionary={}):
     print("=" * 8, "Excel Manager", "=" * 8)
     while True:
         print("1 - Test Excel Tagging")
@@ -21,11 +22,13 @@ def Main(text_dictionary = {}):
         elif ok_to_exit == 2:
             TestExcelLoading()
 
+
 def ExcelFileSelection():
     pass
 
-def TestExcelTagging(text_dictionary = {}):
-    #does not work if the Excel file is opened
+
+def TestExcelTagging(text_dictionary={}):
+    # TODO: (resolve this?) Does not work if the Excel file is opened
     """
     Proof of concept function for outputting tagged files into an Excel Document
     3 Test Documents (with pre-defined tags) used for testing
