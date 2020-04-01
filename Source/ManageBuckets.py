@@ -145,9 +145,11 @@ def SelectBucketFile(viewed_file_titles):
                     CLIMenu.selected_filename = chosen_file
                     print("\nCurrent filename is now:\n", chosen_file, "\n")
                     break
-        except ValueError:  # TODO: Resolve this try-except bug...
+        except ValueError:  # TODO: Determine if SelectBucketFile(file_titles) is buggy.
             print("Invalid integer. Please enter valid input.")
             #SelectBucketFile(file_titles)
+        else:
+            break
 
     while True:
         print("Proceed with Keyword Tagging?\n")
@@ -191,10 +193,6 @@ def MoveCopiedFile(filename, source_bucket, destination_bucket):
     )
 
     return get_object_response, put_object_response
-
-
-def ChooseFilesToScan():
-    pass
 
 
 # TEST CODE BELOW:

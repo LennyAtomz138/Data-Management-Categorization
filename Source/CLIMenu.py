@@ -17,10 +17,6 @@ def MainMenu():
     :return:
     """
 
-    # TODO: Figure out how to handle current_bucket correctly.
-    # TODO: Goal: Configure so that it uses the default bucket in TextractPDFandDOCXVersion (in Main) if
-    # TODO:       ... the user doesn't specifically select one.
-
     print("*=*" * 14)
     print("Database Management Categorization Tool")
     # print("\t" * 2, "(DMCT)") <- This version shifts the logo over to fit CLI a little better.
@@ -29,7 +25,6 @@ def MainMenu():
 
     # TODO: Add a constant notifier that shows what bucket user is in.
     # TODO: Add intermediate messages in-between steps to keep user informed.
-    # TODO: Add nested feature to Main Menu s.t. user can view bucket, then select bucket, etc.
     while True:
         print("=" * 14, "Main Menu", "=" * 16)
         print("",
