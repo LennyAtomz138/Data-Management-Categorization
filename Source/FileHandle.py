@@ -18,6 +18,10 @@ class FileHandle:
             self.fileType = 'pdf'
         elif self.fileName.endswith('.docx'):
             self.fileType = 'docx'
+        elif self.fileName.endswith('.jpg'):
+            self.fileType = 'jpg'
+        elif self.fileName.endswith('.png'):
+            self.fileType = 'png'
         else:
             raise TypeError("Filename: " + self.fileName +
                             "is not of type docx or pdf.  Please only use supported filetypes.")
