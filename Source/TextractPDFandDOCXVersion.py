@@ -303,7 +303,7 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
             #CLIMenu.MainMenu()
             break
         elif ok_to_exit == 1:  # Okay to Proceed
-            ExcelManager.ExcelMenu()
+            ExcelManager.ExcelMenu(text_dictionary)
 
 # TODO: Figure out how to keep Main Menu from launching after attempting to exit program,
 #  note that this seems to happen after the Textractor does it job and the user is
