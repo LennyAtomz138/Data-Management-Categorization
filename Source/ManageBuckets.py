@@ -10,11 +10,6 @@ from Source import CLIMenu
 # A low-level client representing Amazon Simple Storage Service (S3)
 client = boto3.client('s3')
 
-practice_src_bucket = 'uconn-sdp-team11-unprocessed-docs'
-practice_object = 'Test3PagePDF_Seven_Ways_to_Apply_the_Cyber_Kill_Chain_'\
-                  'with_a_Threat_Intelligence_Platform-page-003.pdf'
-practice_dst_bucket = 'uconn-sdp-team11-tagged-docs'
-
 
 def ViewBuckets():
     """
@@ -50,6 +45,7 @@ def SelectBucket(bucket_list):
     """
     bucket_options = bucket_list
 
+    # Prompt user to select a bucket number.
     while True:
         user_input = int(input("\nEnter Bucket Number: "))
         if user_input < 0 or user_input > len(bucket_options):
@@ -61,6 +57,7 @@ def SelectBucket(bucket_list):
             print(bucket_options[user_input], "\n")
             break
 
+    # Once user has selected bucket, launch bucket file viewer (ViewBucketFiles()).
     while True:
         print("Would you like to proceed?\n")
         print("1 - Okay to Proceed")
@@ -68,9 +65,9 @@ def SelectBucket(bucket_list):
         ok_to_exit = int(input("Enter Number: "))
         if ok_to_exit < 0 or ok_to_exit > 1:
             print("Invalid input: Please try again.")
-            raise ValueError
+            continue
         elif ok_to_exit == 0:  # Try Again
-            SelectBucket(bucket_options)
+            continue
         elif ok_to_exit == 1:  # Okay to Proceed
             # If user has not selected a filename, prompt them to do so.
             if CLIMenu.selected_filename is None:
@@ -90,28 +87,33 @@ def ViewBucketFiles(bucket):
     file_number = 1
     file_titles = {}
     kwargs = {'Bucket': bucket}
-
     list_objects_v2_response = client.list_objects_v2(**kwargs)
+
+    # List out the bucket files, if it's empty launch new instance of bucket viewer (ViewBuckets()).
     while True:
-        try:
+        try:  # If bucket contains contents, print them out.
             for file_object in list_objects_v2_response['Contents']:
                 file_titles.update({file_number: file_object['Key']})
                 file_number += 1
             break
-        except KeyError:
+        except KeyError:  # If bucket is empty launch ViewBuckets().
             print("\nIt appears that the selected bucket is currently empty.")
             print("Please try again:\n")
             ViewBuckets()
 
+    # Reset file_number for re-use here.
     file_number = 1
     print("")
     print("*=*" * 14)
     print("\t\t  Current Bucket Files")
     print("*=*" * 14)
+
+    # Print out all bucket files.
     for title in file_titles:
         print(file_number, ":", file_titles[title])
         file_number += 1
 
+    # Launch bucket file selector with the dictionary of file titles.
     SelectBucketFile(file_titles)
 
 
@@ -121,8 +123,11 @@ def SelectBucketFile(viewed_file_titles):
     :param: viewed_file_titles: dictionary of file titles found within current bucket
     :return:
     """
+
+    # Note that viewed_file_titles is a dictionary.
     file_titles = viewed_file_titles
 
+    # Prompt user to select the file that they are interested in having analyzed.
     while True:
         print("\nPlease Select Option:")
         print("",
@@ -130,28 +135,30 @@ def SelectBucketFile(viewed_file_titles):
               "0 - Exit Bucket File Viewer\n")
         user_input = int(input("Enter Number: "))
         try:
-            if user_input < 0 or user_input > 1:
+            if user_input < 0 or user_input > 1:  # Repeat the options.
                 print("Invalid input: Please try again.")
-                raise ValueError
-            elif user_input == 0:
+                continue
+            elif user_input == 0:  # Leave this function call.
                 print("Returning to the Main Menu")
-                CLIMenu.MainMenu()
-            elif user_input == 1:
+                return
+            elif user_input == 1:  # Identify the desired file by its corresponding file number.
                 chosen_file_number = int(input("Enter the corresponding file number: "))
                 if chosen_file_number < 1 or chosen_file_number > len(file_titles):
                     print("Invalid input: Please try again.")
-                    SelectBucketFile(file_titles)
-                else:
+                    continue
+                else:  # Assign the global variable, CLIMenu.selected_filename, the file chosen by user.
                     chosen_file = file_titles[chosen_file_number]
                     CLIMenu.selected_filename = chosen_file
                     print("\nCurrent filename is now:\n", chosen_file, "\n")
-                    break
-        except ValueError:  # TODO: Determine if SelectBucketFile(file_titles) is buggy.
-            print("Invalid integer. Please enter valid input.")
-            #SelectBucketFile(file_titles)
-        else:
+                    return
+        except ValueError:  # If some unanticipated value is encountered, retry.
+            print("Encountered unexpected value error: Please try again.")
+            continue
+        else:  # If some other strange behavior takes place, break out of this loop.
+            print("Encountered expected looping behavior: Exiting now.")
             break
 
+    # Prompt user to decided whether or not to proceed with the keyword tagging process.
     while True:
         print("Proceed with Keyword Tagging?\n")
         print("",
@@ -162,17 +169,17 @@ def SelectBucketFile(viewed_file_titles):
         try:
             if ok_to_exit < 0 or ok_to_exit > 2:
                 print("Invalid input: Please try again.")
-                raise ValueError
+                continue
             elif ok_to_exit == 0:
-                CLIMenu.MainMenu()
-                break
+                print("Exiting Bucket File Selector.")
+                return
             elif ok_to_exit == 1:
                 CLIMenu.GetUserKeywords()
             elif ok_to_exit == 2:
                 ViewBucketFiles(CLIMenu.current_bucket)
         except ValueError:
-            print("Invalid integer. Please enter valid input.")
-            break
+            print("Encountered unexpected value error: Please try again.")
+            continue
 
 
 def MoveCopiedFile(filename, source_bucket, destination_bucket):
@@ -194,11 +201,28 @@ def MoveCopiedFile(filename, source_bucket, destination_bucket):
         Key=filename
     )
 
-    return get_object_response, put_object_response
+    if (get_object_response['ResponseMetadata']['HTTPStatusCode']) == 200:
+        print("Successfully retrieved", filename, "from bucket", source_bucket, "\b.")
+    else:
+        print("Encountered error while attempting to retrieve",
+              filename, "from bucket", source_bucket, "\b!")
+
+    if (put_object_response['ResponseMetadata']['HTTPStatusCode']) == 200:
+        print("Successfully moved a copy of", filename, "to bucket", destination_bucket, "\b.")
+    else:
+        print("Encountered error while attempting to transfer a copy of ",
+              filename, "from bucket", source_bucket, "to bucket", destination_bucket, "\b!")
+    return
 
 
 # TEST CODE BELOW:
 #------------------------------------------------------------------#
+# import boto3
+# client = boto3.client('s3')
+# practice_src_bucket = 'uconn-sdp-team11-unprocessed-docs'
+# practice_object = 'Test3PagePDF_Seven_Ways_to_Apply_the_Cyber_Kill_Chain_'\
+#                   'with_a_Threat_Intelligence_Platform-page-003.pdf'
+# practice_dst_bucket = 'uconn-sdp-team11-tagged-docs'
 # test_file_to_move = 'LM-White-Paper-Defendable-Architectures.pdf'
 # MoveCopiedFile(filename=test_file_to_move,
 #                source_bucket=practice_src_bucket,
