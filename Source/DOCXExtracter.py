@@ -1,4 +1,7 @@
-import textract, re, os
+import textract
+import re
+import os
+
 
 def extractDOCX(local_filepath):
     text = textract.process(local_filepath)
