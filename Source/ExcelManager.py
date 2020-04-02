@@ -2,6 +2,8 @@
 from Source import FileHandle, CLIMenu
 from openpyxl import Workbook, load_workbook
 
+
+
 def Main(text_dictionary = {}):
     print("=" * 8, "Excel Manager", "=" * 8)
     while True:
@@ -15,11 +17,13 @@ def Main(text_dictionary = {}):
             raise ValueError
         elif ok_to_exit == 0:
             print("\n")
-            break
+            return
         elif ok_to_exit == 1:
             TestExcelTagging(text_dictionary)
+            return
         elif ok_to_exit == 2:
             TestExcelLoading()
+            return
 
 def ExcelFileSelection():
     pass

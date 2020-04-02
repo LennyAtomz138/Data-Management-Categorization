@@ -99,6 +99,7 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
             raise ValueError
         elif ok_to_exit == 0:
             print("\n")
-            break
+            return
         elif ok_to_exit == 1:  # Okay to Proceed
             ExcelManager.Main(text_dictionary)
+            return
