@@ -297,10 +297,10 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
         ok_to_exit = int(input("Enter Number: "))
         if ok_to_exit < 0 or ok_to_exit > 1:
             print("Invalid input: Please try again.")
-            raise ValueError
+            continue
         elif ok_to_exit == 0:
             print("\n")
-            break
+            return
         elif ok_to_exit == 1:  # Okay to Proceed
             ExcelManager.Main(text_dictionary)
 

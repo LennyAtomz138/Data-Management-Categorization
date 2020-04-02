@@ -54,7 +54,7 @@ def SelectBucket(bucket_list):
         user_input = int(input("\nEnter Bucket Number: "))
         if user_input < 0 or user_input > len(bucket_options):
             print("Invalid input: Please try again.")
-            raise ValueError
+            continue
         else:
             CLIMenu.current_bucket = bucket_options[user_input]
             print("\nCurrent Bucket:")
