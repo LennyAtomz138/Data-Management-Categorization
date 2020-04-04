@@ -181,7 +181,8 @@ def SelectBucketFile(viewed_file_titles):
             print("Encountered unexpected value error: Please try again.")
             continue
 
-
+# TODO: Determine where to use this function.
+# TODO: Will it be called in CLIMenu? If so, then when?
 def MoveCopiedFile(filename, source_bucket, destination_bucket):
     """
     This function copies file from source bucket to destination bucket.
@@ -213,6 +214,10 @@ def MoveCopiedFile(filename, source_bucket, destination_bucket):
         print("Encountered error while attempting to transfer a copy of ",
               filename, "from bucket", source_bucket, "to bucket", destination_bucket, "\b!")
     return
+
+
+def TagFile():
+    pass
 
 
 # TEST CODE BELOW:
