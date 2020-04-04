@@ -262,8 +262,8 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
     document = FileHandle.FileHandle(filename)
     keywords = incoming_keywords
 
-    if document.fileType == "pdf":
-        analyzer = DocumentProcessor(roleArn, bucket, document.fileName)
+    if document.file_type == "pdf":
+        analyzer = DocumentProcessor(roleArn, bucket, document.file_name)
         analyzer.CreateTopicAndQueue()
         analyzer.ProcessDocument(ProcessType.DETECTION)
         analyzer.DeleteTopicAndQueue()

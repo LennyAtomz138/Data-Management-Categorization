@@ -82,7 +82,7 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
     document = FileHandle.FileHandle(filename)
     keywords = incoming_keywords
 
-    block_count = ProcessDoc(bucket, document.fileName)
+    block_count = ProcessDoc(bucket, document.file_name)
 
     print("<TEST>: Here's the text array:\n", text_array)
     print("<TEST>: Here are the (sorted) keywords:\n", keywords)

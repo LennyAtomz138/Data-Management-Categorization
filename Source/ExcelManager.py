@@ -38,8 +38,8 @@ def TestExcelTagging(text_dictionary={}):
     print("=" * 8, "Excel Tagging Test", "=" * 8)
 
 #    file = FileHandle.FileHandle(CLIMenu.selected_filename)
-#    print(file.fileName)
-#    print(file.fileType)
+#    print(file.file_name)
+#    print(file.file_type)
 
     # Test files
 
@@ -73,8 +73,8 @@ def TestExcelTagging(text_dictionary={}):
 
     fileCount = 2
     for file in files:
-        worksheet.cell(row=fileCount, column=1, value=file.fileName)
-        worksheet.cell(row=fileCount, column=2, value=file.fileType)
+        worksheet.cell(row=fileCount, column=1, value=file.file_name)
+        worksheet.cell(row=fileCount, column=2, value=file.file_type)
         tagCol = 3
         for tag in file.tags:
             worksheet.cell(row=fileCount, column=tagCol, value=tag)
