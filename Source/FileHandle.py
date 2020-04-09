@@ -32,19 +32,5 @@ class FileHandle:
             raise TypeError("Filename: " + self.file_name +
                             "is not of type docx or pdf.  Please only use supported filetypes.")
 
-    # TODO: Note that it's currently configured to build a list of tags.
     def add_tag(self, bucket, tags):
-        self.tags.append(tags)
-        self.bucket = CLIMenu.current_bucket
-
-        response = client.put_object_tagging(
-            Bucket=bucket,
-            Key='Tag List',  # TODO: How does this key differ from the one(s) below?
-            Tagging={
-                'TagSet': [
-                    {  # TODO: Will I pass in a dictionary here or just append one thing per request?
-                        'Keyword': self.tags
-                    }
-                ]
-            }
-        )
+        pass
