@@ -31,6 +31,7 @@ class FileHandle:
         else:
             raise TypeError("Filename: " + self.file_name +
                             "is not of type docx or pdf.  Please only use supported filetypes.")
+        self.bucket = CLIMenu.current_bucket
 
-    def add_tag(self, bucket, tags):
-        pass
+    def add_tag(self, tags):
+        self.tags.append(tags)

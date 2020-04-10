@@ -102,5 +102,6 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
             return
         elif ok_to_exit == 1:  # Okay to Proceed
             ExcelManager.Main(text_dictionary)
+            return
         else:
             continue

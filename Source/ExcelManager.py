@@ -2,31 +2,109 @@
 from Source import FileHandle, CLIMenu
 from openpyxl import Workbook, load_workbook
 
-
+memoryFileName = 'DCMT_Results.xlsx'
+entryCount = 0
+workbook = Workbook()
 
 def Main(text_dictionary = {}):
-    print("=" * 8, "Excel Manager", "=" * 8)
+    ExcelInitialization()
     while True:
+        print("=" * 8, "Excel Manager", "=" * 8)
         print("1 - Test Excel Tagging")
-        print("2 - Test Excel Loading")
+        print("2 - Print Excel Contents")
+        print("3 - Reset Excel Sheet")
         print("0 - Quit to Main Menu\n")
-        print("Current Dictionary Contents: ", text_dictionary)
+        print("Current Dictionary Contents: \n", text_dictionary)
         ok_to_exit = int(input("Enter Number: "))
-        if ok_to_exit < 0 or ok_to_exit > 2:
+        if ok_to_exit < 0 or ok_to_exit > 3:
             print("Invalid input: Please try again.")
-            raise ValueError
+            continue
         elif ok_to_exit == 0:
             print("\n")
             return
         elif ok_to_exit == 1:
             TestExcelTagging(text_dictionary)
-            return
         elif ok_to_exit == 2:
-            TestExcelLoading()
+            PrintContents()
+        elif ok_to_exit == 3:
+            ExcelReset()
+
+def KeywordSelection(text_dictionary = {}):
+    pass
+
+def ExcelInitialization():
+    global workbook
+    try:
+        #tries opening Excel memory file
+        workbook = load_workbook(memoryFileName)
+        activeWorkbook = workbook.active
+        print(memoryFileName, " has been loaded\n")
+    except:
+        #if it doesn't work, it creates the workbook
+        workbook = Workbook()
+        activeWorkbook = workbook.active
+        activeWorkbook['A1'] = "FILE_NAME"
+        activeWorkbook['B1'] = "FILE_TYPE"
+        activeWorkbook['C1'] = "BUCKET_LOCATION"
+        activeWorkbook['D1'] = "FILE_TAG_1"
+        activeWorkbook['E1'] = "FILE_TAG_2"
+        activeWorkbook['F1'] = "FILE_TAG_3"
+        activeWorkbook['G1'] = "FILE_TAG_4"
+        activeWorkbook['H1'] = "FILE_TAG_5"
+        workbook.save(memoryFileName)
+        print(memoryFileName, " has been created\n")
+    finally:
+        global entryCount
+        entryCount = activeWorkbook.max_row - 1
+        print("Entry count is ", entryCount)
+
+def ExcelReset():
+    print("=" * 8, "Excel Reset", "=" * 8)
+    while True:
+        print("Would you like to reset the contents of the Excel sheet?")
+        print("1 - Yes")
+        print("0 - No\n")
+        ok_to_exit = int(input("Enter Number: "))
+        if ok_to_exit < 0 or ok_to_exit > 1:
+            print("Invalid input: Please try again.")
+            continue
+        elif ok_to_exit == 0:
+            print("\n")
+            return
+        elif ok_to_exit == 1:
+            while True:
+                print("Are you sure?")
+                print("1 - Confirm")
+                print("0 - Cancel\n")
+                ok_to_confirm = int(input("Enter Number: "))
+                if ok_to_confirm < 0 or ok_to_confirm > 1:
+                    print("Invalid input: Please try again.")
+                    continue
+                elif ok_to_confirm == 0:
+                    print("\n")
+                    return
+                elif ok_to_confirm == 1:
+                    global workbook
+                    workbook = Workbook()
+                    activeWorkbook = workbook.active
+                    activeWorkbook['A1'] = "FILE_NAME"
+                    activeWorkbook['B1'] = "FILE_TYPE"
+                    activeWorkbook['C1'] = "BUCKET_LOCATION"
+                    activeWorkbook['D1'] = "FILE_TAG_1"
+                    activeWorkbook['E1'] = "FILE_TAG_2"
+                    activeWorkbook['F1'] = "FILE_TAG_3"
+                    activeWorkbook['G1'] = "FILE_TAG_4"
+                    activeWorkbook['H1'] = "FILE_TAG_5"
+                    workbook.save(memoryFileName)
+                    return
+        elif ok_to_exit == 2:
+            PrintContents()
             return
 
-def ExcelFileSelection():
+def AddEntry(text_dictionary = {}):
     pass
+
+
 
 def TestExcelTagging(text_dictionary = {}):
     #does not work if the Excel file is opened
@@ -38,9 +116,9 @@ def TestExcelTagging(text_dictionary = {}):
     """
     print("=" * 8, "Excel Tagging Test", "=" * 8)
 
-#    file = FileHandle.FileHandle(CLIMenu.selected_filename)
-#    print(file.file_name)
-#    print(file.file_type)
+    #file = FileHandle.FileHandle(CLIMenu.selected_filename)
+    #print(file.file_name)
+    #print(file.file_type)
 
     # Test files
 
@@ -48,14 +126,14 @@ def TestExcelTagging(text_dictionary = {}):
     file2 = FileHandle.FileHandle("Trains.jpg")
     file3 = FileHandle.FileHandle("Automobiles.docx")
 
-    file1.addtag("aviation")
-    file1.addtag("documentation")
+    file1.add_tag("aviation")
+    file1.add_tag("documentation")
 
-    file2.addtag("locomotive")
-    file2.addtag("promotional")
+    file2.add_tag("locomotive")
+    file2.add_tag("promotional")
 
-    file3.addtag("automotive")
-    file3.addtag("image")
+    file3.add_tag("automotive")
+    file3.add_tag("image")
 
     # List of all files to add to Excel doc
 
@@ -67,8 +145,12 @@ def TestExcelTagging(text_dictionary = {}):
     worksheet = outputbook.active
     worksheet['A1'] = "File Name"
     worksheet['B1'] = "File Type"
-    worksheet['C1'] = "File Tag 1"
-    worksheet['D1'] = "File Tag 2"
+    worksheet['C1'] = "Bucket Location"
+    worksheet['D1'] = "File Tag 1"
+    worksheet['E1'] = "File Tag 2"
+    worksheet['F1'] = "File Tag 3"
+    worksheet['G1'] = "File Tag 4"
+    worksheet['H1'] = "File Tag 5"
 
     # Add the file names, types, and tags to the sheet
 
@@ -84,20 +166,17 @@ def TestExcelTagging(text_dictionary = {}):
 
     # Save the doc
     outputbook.save('DCMT_Results.xlsx')
+    global entryCount
+    entryCount = entryCount + 1
 
 
-def TestExcelLoading():
-    print("=" * 8, "Excel Loading Test", "=" * 8)
+def PrintContents():
+    print("=" * 8, "Excel Printed Contents", "=" * 8)
+    activeWorkbook = workbook.active
 
-    # Path can also be a path to a excel file location.
-    path = 'DCMT_Results.xlsx'
-
-    wb = load_workbook(path)
-    ws = wb.active
-
-    for i in range(1, ws.max_row + 1):
-        for j in range(1, ws.max_column + 1):
-            c = ws.cell(row = i, column = j)
+    for i in range(1, activeWorkbook.max_row + 1):
+        for j in range(1, 9):
+            c = activeWorkbook.cell(row = i, column = j)
 
             # A check that only exists because not all the headers are labelled.
             if c.value is None:
