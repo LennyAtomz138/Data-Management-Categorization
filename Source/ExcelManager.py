@@ -23,14 +23,11 @@ def Main(text_dictionary = {}):
             print("\n")
             return
         elif ok_to_exit == 1:
-            TestExcelTagging(text_dictionary)
+            print("This does nothing, remove later")
         elif ok_to_exit == 2:
             PrintContents()
         elif ok_to_exit == 3:
             ExcelReset()
-
-def KeywordSelection(text_dictionary = {}):
-    pass
 
 def ExcelInitialization():
     global workbook
@@ -97,78 +94,59 @@ def ExcelReset():
                     activeWorkbook['H1'] = "FILE_TAG_5"
                     workbook.save(memoryFileName)
                     return
-        elif ok_to_exit == 2:
-            PrintContents()
-            return
 
+#Can only be called from the Textract programs, cannot be called from Main Menu
 def AddEntry(text_dictionary = {}):
-    pass
+    ExcelInitialization()
+    print("=" * 8, "Add File Entry", "=" * 8)
+    global workbook
+    workbook = load_workbook(memoryFileName)
+    activeWorkbook = workbook.active
+    if not text_dictionary: #if the text_dictionary is empty
+        print("There are no tags that were scanned for. Returning to Main Menu")
+        return
+
+    print("Choose at most five keywords that will be applied to the file")
+    selected_keys = KeywordSelection(text_dictionary)
+    print("The selected keywords are ", selected_keys)
+    file = FileHandle.FileHandle(CLIMenu.selected_filename)
+    input_row = entryCount + 2
+    activeWorkbook.cell(row = input_row, column = 1, value = file.file_name)
+    activeWorkbook.cell(row = input_row, column = 2, value = file.file_type)
+    activeWorkbook.cell(row = input_row, column = 3, value = file.bucket)
+    for i in range(0, len(selected_keys)):
+        activeWorkbook.cell(row = input_row, column = i + 4, value = selected_keys[i])
+    workbook.save(memoryFileName)
+    print("New entry successfully saved")
+    return
 
 
 
-def TestExcelTagging(text_dictionary = {}):
-    #does not work if the Excel file is opened
-    """
-    Proof of concept function for outputting tagged files into an Excel Document
-    3 Test Documents (with pre-defined tags) used for testing
-    Output document saved to the Source directory at the moment
-    :return:
-    """
-    print("=" * 8, "Excel Tagging Test", "=" * 8)
 
-    #file = FileHandle.FileHandle(CLIMenu.selected_filename)
-    #print(file.file_name)
-    #print(file.file_type)
+def KeywordSelection(text_dictionary = {}):
+    selected_keys = []
+    keyword_counter = 1
+    print("=" * 8, "Keyword Selection", "=" * 8)
+    print("(Input '0' when finished)")
+    print("Current Dictionary Contents: \n", text_dictionary)
+    print("=" * 41)
+    while True:
+        if keyword_counter > len(text_dictionary) or keyword_counter > 5:
+            print("No more entries can be added")
+            break
 
-    # Test files
-
-    file1 = FileHandle.FileHandle("Planes.pdf")
-    file2 = FileHandle.FileHandle("Trains.jpg")
-    file3 = FileHandle.FileHandle("Automobiles.docx")
-
-    file1.add_tag("aviation")
-    file1.add_tag("documentation")
-
-    file2.add_tag("locomotive")
-    file2.add_tag("promotional")
-
-    file3.add_tag("automotive")
-    file3.add_tag("image")
-
-    # List of all files to add to Excel doc
-
-    files = [file1, file2, file3]
-
-    # Set up Excel Doc
-
-    outputbook = Workbook()
-    worksheet = outputbook.active
-    worksheet['A1'] = "File Name"
-    worksheet['B1'] = "File Type"
-    worksheet['C1'] = "Bucket Location"
-    worksheet['D1'] = "File Tag 1"
-    worksheet['E1'] = "File Tag 2"
-    worksheet['F1'] = "File Tag 3"
-    worksheet['G1'] = "File Tag 4"
-    worksheet['H1'] = "File Tag 5"
-
-    # Add the file names, types, and tags to the sheet
-
-    fileCount = 2
-    for file in files:
-        worksheet.cell(row=fileCount, column=1, value=file.file_name)
-        worksheet.cell(row=fileCount, column=2, value=file.file_type)
-        tagCol = 3
-        for tag in file.tags:
-            worksheet.cell(row=fileCount, column=tagCol, value=tag)
-            tagCol += 1
-        fileCount += 1
-
-    # Save the doc
-    outputbook.save('DCMT_Results.xlsx')
-    global entryCount
-    entryCount = entryCount + 1
-
+        user_input = input("Enter keyword # {counter}: ".format(counter=keyword_counter))
+        if user_input.lower() == '0':
+            break
+        else:
+            if user_input in text_dictionary.keys():
+                selected_keys.append(user_input.lower())
+                keyword_counter += 1
+            else:
+                print("Invalid keyword, input a valid keyword")
+                print("Current Dictionary Contents: \n", text_dictionary)
+    selected_keys.sort()
+    return selected_keys
 
 def PrintContents():
     print("=" * 8, "Excel Printed Contents", "=" * 8)

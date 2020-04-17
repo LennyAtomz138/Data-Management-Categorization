@@ -302,7 +302,7 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
             print("\n")
             return
         elif ok_to_exit == 1:  # Okay to Proceed
-            ExcelManager.Main(text_dictionary)
+            ExcelManager.AddEntry(text_dictionary)
             return
 
 # TODO: Figure out how to keep Main Menu from launching after attempting to exit program,
