@@ -61,13 +61,13 @@ def SelectBucket(bucket_list):
     while True:
         print("Would you like to proceed?\n")
         print("1 - Okay to Proceed")
-        print("0 - Try Again\n")
+        print("0 - Go Back\n")
         ok_to_exit = int(input("Enter Number: "))
         if ok_to_exit < 0 or ok_to_exit > 1:
             print("Invalid input: Please try again.")
             continue
-        elif ok_to_exit == 0:  # Try Again
-            continue
+        elif ok_to_exit == 0:  # Go Back
+            break
         elif ok_to_exit == 1:  # Okay to Proceed
             # If user has not selected a filename, prompt them to do so.
             if CLIMenu.selected_filename is None:
@@ -75,6 +75,9 @@ def SelectBucket(bucket_list):
             # Otherwise, user has a filename selected and they're ready to input keywords.
             else:
                 CLIMenu.GetUserKeywords()
+        else:
+            print("Unable to process your request at this time.\n",
+                  "Please try again.")
 
 
 def ViewBucketFiles(bucket):
@@ -181,6 +184,7 @@ def SelectBucketFile(viewed_file_titles):
             print("Encountered unexpected value error: Please try again.")
             continue
 
+
 # TODO: Determine where to use this function.
 # TODO: Will it be called in CLIMenu? If so, then when?
 def MoveCopiedFile(filename, source_bucket, destination_bucket):
@@ -215,7 +219,8 @@ def MoveCopiedFile(filename, source_bucket, destination_bucket):
               filename, "from bucket", source_bucket, "to bucket", destination_bucket, "\b!")
     return
 
-    # TODO: Note that it's currently configured to build a list of tags.
+
+# TODO: Note that it's currently configured to build a list of tags.
 def TagFile():
     # # TODO: Note that it's currently configured to build a list of tags.
     # def add_tag(self, bucket, tags):
