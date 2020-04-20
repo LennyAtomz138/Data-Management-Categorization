@@ -10,25 +10,23 @@ def Main(text_dictionary = {}):
     ExcelInitialization()
     while True:
         print("=" * 8, "Excel Manager", "=" * 8)
-        print("1 - Test Excel Tagging")
-        print("2 - Print Excel Contents")
-        print("3 - Reset Excel Sheet")
+        print("1 - Print Excel Contents")
+        print("2 - Reset Excel Sheet")
         print("0 - Quit to Main Menu\n")
         print("Current Dictionary Contents: \n", text_dictionary)
         ok_to_exit = int(input("Enter Number: "))
-        if ok_to_exit < 0 or ok_to_exit > 3:
+        if ok_to_exit < 0 or ok_to_exit > 2:
             print("Invalid input: Please try again.")
             continue
         elif ok_to_exit == 0:
             print("\n")
             return
         elif ok_to_exit == 1:
-            print("This does nothing, remove later")
-        elif ok_to_exit == 2:
             PrintContents()
-        elif ok_to_exit == 3:
+        elif ok_to_exit == 2:
             ExcelReset()
-
+"""A memory check that determines whether an excel file should be created or loaded
+    It is run whenever another program makes first access into the ExcelManager"""
 def ExcelInitialization():
     global workbook
     try:
@@ -55,6 +53,7 @@ def ExcelInitialization():
         entryCount = activeWorkbook.max_row - 1
         print("Entry count is ", entryCount)
 
+"""Resets the contents of the excel file to allow for a clean slate"""
 def ExcelReset():
     print("=" * 8, "Excel Reset", "=" * 8)
     while True:
@@ -95,7 +94,8 @@ def ExcelReset():
                     workbook.save(memoryFileName)
                     return
 
-#Can only be called from the Textract programs, cannot be called from Main Menu
+"""Can only be called from the Textract programs, cannot be called from Main Menu
+    Adds an scanned file entry to the excel file"""
 def AddEntry(text_dictionary = {}):
     ExcelInitialization()
     print("=" * 8, "Add File Entry", "=" * 8)
@@ -122,7 +122,8 @@ def AddEntry(text_dictionary = {}):
 
 
 
-
+"""The user selects which keywords they've scanned for that they want saved into the excel memory file
+    This is due to the five tag limitation"""
 def KeywordSelection(text_dictionary = {}):
     selected_keys = []
     keyword_counter = 1
@@ -148,6 +149,7 @@ def KeywordSelection(text_dictionary = {}):
     selected_keys.sort()
     return selected_keys
 
+"""Prints the contents of the excel file for viewingr"""
 def PrintContents():
     print("=" * 8, "Excel Printed Contents", "=" * 8)
     activeWorkbook = workbook.active
@@ -155,10 +157,7 @@ def PrintContents():
     for i in range(1, activeWorkbook.max_row + 1):
         for j in range(1, 9):
             c = activeWorkbook.cell(row = i, column = j)
-
-            # A check that only exists because not all the headers are labelled.
             if c.value is None:
                 break
-
             print(c.value.center(15), end=" ")
         print('\n')
