@@ -104,7 +104,8 @@ def GetUserKeywords():
                            "Enter 1 for 'Yes' or 0 for 'No': "))
     try:
         if user_input < 0 or user_input > 1:
-            raise ValueError
+            print("Invalid input: Please try again.")
+            return
         elif user_input == 0:
             print("Would you like to try again?\n",
                   "1 - Try Again\n",
