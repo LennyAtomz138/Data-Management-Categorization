@@ -219,8 +219,18 @@ def MoveCopiedFile(filename, source_bucket, destination_bucket):
     return
 
 
-def DeleteOriginalFile():
-    pass
+def DeleteOriginalFile(filename, original_bucket):
+    """
+    Deletes an S3 object file from its 'original bucket'.
+    Intended to be used with MoveCopiedFile() such that it deletes the file that's in the source bucket.
+    :param filename: the source file to be deleted
+    :param original_bucket: the source bucket which contains the original file to be deleted
+    :return:
+    """
+    response = client.delete_object(
+        Bucket=original_bucket,
+        Key=filename,
+    )
 
 
 # TODO: Note that it's currently configured to build a list of tags.
@@ -257,5 +267,6 @@ def TagFile():
 # MoveCopiedFile(filename=test_file_to_move,
 #                source_bucket=practice_src_bucket,
 #                destination_bucket=practice_dst_bucket)
+# test_file_to_delete = 'GSE63341_series_matrix.txt' <-- must upload prior to deletion test
 #------------------------------------------------------------------#
 # ViewBucketFiles(practice_src_bucket)
