@@ -5,7 +5,7 @@ List of s3api commands: https://docs.aws.amazon.com/cli/latest/reference/s3api/#
 """
 
 import boto3
-from Source import CLIMenu
+from Source import CLIMenu, ExcelManager
 
 # A low-level client representing Amazon Simple Storage Service (S3)
 client = boto3.client('s3')
@@ -213,6 +213,7 @@ def MoveCopiedFile(filename, source_bucket, destination_bucket):
 
     if (put_object_response['ResponseMetadata']['HTTPStatusCode']) == 200:
         print("Successfully moved a copy of", filename, "to bucket", destination_bucket, "\b.")
+        ExcelManager.ModifyEntry(filename, source_bucket, destination_bucket)
     else:
         print("Encountered error while attempting to transfer a copy of ",
               filename, "from bucket", source_bucket, "to bucket", destination_bucket, "\b!")

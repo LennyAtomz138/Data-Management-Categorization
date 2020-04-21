@@ -120,6 +120,22 @@ def AddEntry(text_dictionary = {}):
     print("New entry successfully saved")
     return
 
+"""Can only be called from the ManageBuckets programs, cannot be called from Main Menu
+    Checks for a viable file in the excel memory to modify"""
+def ModifyEntry(filename, source_bucket, destination_bucket):
+    global workbook
+    workbook = load_workbook(memoryFileName)
+    activeWorkbook = workbook.active
+    for row in activeWorkbook.rows:
+        if row[0].value is None:
+            break
+        if (row[0].value == filename) and (row[2].value == source_bucket):
+            row[2].value = destination_bucket
+            print(filename, " has been moved from ", row[2].value," aka ", source_bucket,  " to ", destination_bucket)
+            break
+    workbook.save(memoryFileName)
+    return
+
 
 
 """The user selects which keywords they've scanned for that they want saved into the excel memory file
