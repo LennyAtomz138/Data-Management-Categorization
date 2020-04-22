@@ -234,26 +234,31 @@ def DeleteOriginalFile(filename, original_bucket):
     )
 
 
-# TODO: Note that it's currently configured to build a list of tags.
-def TagFile():
-    # TODO: Note that it's currently configured to build a list of tags.
-    def add_tag(self, bucket, tags):
-        self.tags.append(tags)
-        self.bucket = CLIMenu.current_bucket
 
-        response = client.put_object_tagging(
-            Bucket=bucket,
-            Key='Tag List',  # TODO: How does this key differ from the one(s) below?
-            Tagging={
-                'TagSet': [
-                    {  # TODO: Will I pass in a dictionary here or just append one thing per request?
-                        'Keyword': self.tags
-                    }
-                ]
-            }
-        )
+def TagFile(self, bucket, tags):
+    """
+    Tags an S3 object file in the specified bucket.
+    :param self: the FileHandle of the S3 object file
+    :param bucket: bucket that the file currently resides in
+    :param tags: the tags to be applied to the file
+    :return:
+    """
+    self.tags.append(tags)
+    self.bucket = CLIMenu.current_bucket
 
-    pass
+    tagset = []
+    for i in range(0, len(tags)):  # Package the tags in the dict format AWS wants.
+        tagset.append({'Key': str(i), 'Value': tags[i]})
+
+    response = client.put_object_tagging(
+        Bucket = bucket,
+        Key = self.file_name,  # This is the name of the file.
+        Tagging={
+            'TagSet': tagset
+        }
+    )
+    print("File tagged in AWS.")
+
 
 
 # TEST CODE BELOW:

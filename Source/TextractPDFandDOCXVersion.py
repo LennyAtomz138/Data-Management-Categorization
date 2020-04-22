@@ -12,6 +12,7 @@ from Source import FileHandle
 from Source import DOCXExtracter
 from Source import CLIMenu
 from Source import ExcelManager
+from Source import ManageBuckets
 
 
 class ProcessType:
@@ -302,7 +303,9 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
             print("\n")
             return
         elif ok_to_exit == 1:  # Okay to Proceed
-            ExcelManager.AddEntry(text_dictionary)
+            tags = ExcelManager.AddEntry(text_dictionary)
+            if tags != 1:  # if there are tags to add, then add them
+                ManageBuckets.TagFile(document, bucket, tags)
             return
 
 # TODO: Figure out how to keep Main Menu from launching after attempting to exit program,

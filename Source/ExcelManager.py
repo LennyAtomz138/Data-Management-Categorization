@@ -104,7 +104,7 @@ def AddEntry(text_dictionary = {}):
     activeWorkbook = workbook.active
     if not text_dictionary: #if the text_dictionary is empty
         print("There are no tags that were scanned for. Returning to Main Menu")
-        return
+        return 1
 
     print("Choose at most five keywords that will be applied to the file")
     selected_keys = KeywordSelection(text_dictionary)
@@ -117,8 +117,8 @@ def AddEntry(text_dictionary = {}):
     for i in range(0, len(selected_keys)):
         activeWorkbook.cell(row = input_row, column = i + 4, value = selected_keys[i])
     workbook.save(memoryFileName)
-    print("New entry successfully saved")
-    return
+    print("New entry successfully saved in Excel File")
+    return selected_keys
 
 """Can only be called from the ManageBuckets programs, cannot be called from Main Menu
     Checks for a viable file in the excel memory to modify"""

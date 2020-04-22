@@ -2,7 +2,7 @@
 
 import io
 import boto3
-from Source import CLIMenu, FileHandle, ExcelManager
+from Source import CLIMenu, FileHandle, ExcelManager, ManageBuckets
 from Source.Algorithms import TextAlgorithm
 
 import math
@@ -101,7 +101,9 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
             print("\n")
             return
         elif ok_to_exit == 1:  # Okay to Proceed
-            ExcelManager.AddEntry(text_dictionary)
+            tags = ExcelManager.AddEntry(text_dictionary)
+            if (tags != 1):  # if there are tags to add, then add them
+                ManageBuckets.TagFile(document, bucket, tags)
             return
         else:
             continue
