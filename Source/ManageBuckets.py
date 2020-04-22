@@ -234,7 +234,6 @@ def DeleteOriginalFile(filename, original_bucket):
     )
 
 
-
 def TagFile(self, bucket, tags):
     """
     Tags an S3 object file in the specified bucket.
@@ -246,19 +245,18 @@ def TagFile(self, bucket, tags):
     self.tags.append(tags)
     self.bucket = CLIMenu.current_bucket
 
-    tagset = []
+    tag_set = []
     for i in range(0, len(tags)):  # Package the tags in the dict format AWS wants.
-        tagset.append({'Key': str(i), 'Value': tags[i]})
+        tag_set.append({'Key': str(i), 'Value': tags[i]})
 
     response = client.put_object_tagging(
-        Bucket = bucket,
-        Key = self.file_name,  # This is the name of the file.
+        Bucket=bucket,
+        Key=self.file_name,  # This is the name of the file.
         Tagging={
-            'TagSet': tagset
+            'TagSet': tag_set
         }
     )
     print("File tagged in AWS.")
-
 
 
 # TEST CODE BELOW:
