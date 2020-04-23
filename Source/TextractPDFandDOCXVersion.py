@@ -244,7 +244,7 @@ class DocumentProcessor:
                     finished = True
 
 
-def Main(incoming_bucket, incoming_filename, incoming_keywords):
+def Main(incoming_bucket, incoming_filename, incoming_keywords, destination_bucket):
     """Runs Textract tool on document that is located in the specified AWS S3 bucket."""
     roleArn = 'arn:aws:iam::172734287275:role/aws-textract-role'
 
@@ -259,6 +259,11 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
         filename = 'An AWS Network Monitoring Comparison.docx'
     else:
         filename = incoming_filename
+
+    if destination_bucket is None:
+        processed_docs_bucket = CLIMenu.destination_bucket
+    else:
+        processed_docs_bucket = destination_bucket
 
     document = FileHandle.FileHandle(filename)
     keywords = incoming_keywords
@@ -304,8 +309,16 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
             return
         elif ok_to_exit == 1:  # Okay to Proceed
             tags = ExcelManager.AddEntry(text_dictionary)
-            if tags != 1:  # if there are tags to add, then add them
-                ManageBuckets.TagFile(document, bucket, tags)
+            if tags != 1:
+                # Move a copy of the tagged file to the processed documents bucket,
+                ManageBuckets.MoveCopiedFile(filename=filename,
+                                             source_bucket=bucket,
+                                             destination_bucket=processed_docs_bucket)
+                # If there are tags to add, then add them.
+                ManageBuckets.TagFile(document, processed_docs_bucket, tags)
+                # Then delete the original version from within the unprocessed docs bucket.
+                ManageBuckets.DeleteOriginalFile(filename=filename,
+                                                 original_bucket=bucket)
             return
 
 # TODO: Figure out how to keep Main Menu from launching after attempting to exit program,

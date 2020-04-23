@@ -48,7 +48,6 @@ def ProcessDoc(bucket, document):
     draw = ImageDraw.Draw(image)
     print('Successfully detected document text.\n')
 
-
     for block in blocks:
         StoreBlockText(block)
 
@@ -102,7 +101,7 @@ def Main(incoming_bucket, incoming_filename, incoming_keywords):
             return
         elif ok_to_exit == 1:  # Okay to Proceed
             tags = ExcelManager.AddEntry(text_dictionary)
-            if (tags != 1):  # if there are tags to add, then add them
+            if tags != 1:  # If there are tags to add, then add them.
                 ManageBuckets.TagFile(document, bucket, tags)
             return
         else:

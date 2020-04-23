@@ -7,7 +7,8 @@ from Source.ManageBuckets import ViewBucketFiles, SelectBucketFile, SelectBucket
 
 # These global variables will be referenced within functions below.
 current_bucket = None  # Chosen by user with SelectBucket()
-selected_filename = None  # Chose by user with SelectBucketFile()T
+selected_filename = None  # Chose by user with SelectBucketFile()
+destination_bucket = 'uconn-sdp-team11-tagged-docs'
 
 
 def MainMenu():
@@ -133,7 +134,8 @@ def GetUserKeywords():
             elif selected_filename.endswith('.docx') or selected_filename.endswith('.pdf'):
                 TextractPDFandDOCXVersion.Main(incoming_bucket=current_bucket,
                                                incoming_filename=selected_filename,
-                                               incoming_keywords=keyword_list)
+                                               incoming_keywords=keyword_list,
+                                               destination_bucket=destination_bucket)
             else:
                 print("DMCT currently only supports the following formats:")
                 print("JPG, PNG, PDF, and DOCX")

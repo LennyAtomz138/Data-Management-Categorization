@@ -59,6 +59,7 @@ def SelectBucket(bucket_list):
 
     # Once user has selected bucket, launch bucket file viewer (ViewBucketFiles()).
     while True:
+        # TODO: I think the loop-to-crash is happening here...
         print("Would you like to proceed?\n")
         print("1 - Okay to Proceed")
         print("0 - Go Back\n")
@@ -67,7 +68,9 @@ def SelectBucket(bucket_list):
             print("Invalid input: Please try again.")
             continue
         elif ok_to_exit == 0:  # Go Back
-            break
+            # TODO: Determine whether to use break or return here...
+            # break
+            return
         elif ok_to_exit == 1:  # Okay to Proceed
             # If user has not selected a filename, prompt them to do so.
             if CLIMenu.selected_filename is None:
@@ -76,7 +79,7 @@ def SelectBucket(bucket_list):
             else:
                 CLIMenu.GetUserKeywords()
         else:
-            continue
+            return
 
 
 def ViewBucketFiles(bucket):
@@ -189,6 +192,7 @@ def SelectBucketFile(viewed_file_titles):
 def MoveCopiedFile(filename, source_bucket, destination_bucket):
     """
     This function copies file from source bucket to destination bucket.
+    :param passed_tag_set:
     :param filename: AWS key of file object to be moved
     :param source_bucket: original location of the file object
     :param destination_bucket: intended destination for the file object
@@ -202,7 +206,7 @@ def MoveCopiedFile(filename, source_bucket, destination_bucket):
 
     put_object_response = client.put_object(
         Bucket=destination_bucket,
-        Key=filename
+        Key=filename,
     )
 
     if (get_object_response['ResponseMetadata']['HTTPStatusCode']) == 200:
