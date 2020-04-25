@@ -13,3 +13,5 @@ wsl.distributions.xml
 WhileLoopPractice.py
 .idea/misc.xml
 .idea/Data-Management-Categorization.iml
+*.xml
+*.iml
