@@ -131,7 +131,7 @@ def ModifyEntry(filename, source_bucket, destination_bucket):
             break
         if (row[0].value == filename) and (row[2].value == source_bucket):
             row[2].value = destination_bucket
-            print(filename, " has been moved from ", row[2].value," aka ", source_bucket,  " to ", destination_bucket)
+            print(filename, " has been moved from ", source_bucket,  " to ", destination_bucket)
             break
     workbook.save(memoryFileName)
     return
