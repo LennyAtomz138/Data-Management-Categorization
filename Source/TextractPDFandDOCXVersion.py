@@ -201,8 +201,8 @@ class DocumentProcessor:
                                                                          NextToken=paginationToken)
 
             blocks = response['Blocks']
-            print('Detected Document Text')
-            print('Pages: {}'.format(response['DocumentMetadata']['Pages']))
+            #  print('Detected Document Text')
+            #  print('Pages: {}'.format(response['DocumentMetadata']['Pages']))
 
             # Display block information
             for block in blocks:
@@ -231,8 +231,8 @@ class DocumentProcessor:
 
             # Get the text blocks
             blocks = response['Blocks']
-            print('Analyzed Document Text')
-            print('Pages: {}'.format(response['DocumentMetadata']['Pages']))
+            #  print('Analyzed Document Text')
+            #  print('Pages: {}'.format(response['DocumentMetadata']['Pages']))
 
             # Display block information
             for block in blocks:
